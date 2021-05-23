@@ -1,0 +1,4 @@
+#Sun May 23 21:41:09 CST 2021
+base.0=/Users/skycn/flutter_app/flutter_study/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

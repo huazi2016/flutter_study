@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/net/bean/ClassRoomBo.dart';
 import 'package:toast/toast.dart';
 
 class RoomDetailPage extends StatefulWidget {
@@ -9,10 +10,11 @@ class RoomDetailPage extends StatefulWidget {
 }
 
 class _RoomDetailState extends State<RoomDetailPage> {
-   TextEditingController answerController = TextEditingController();
+  TextEditingController answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final title = ModalRoute.of(context).settings.arguments as String;
+    final RoomInfoBo infoBo =
+        ModalRoute.of(context).settings.arguments as RoomInfoBo;
     // Toast.show("收到参数=" + title, context,
     //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
     return Scaffold(
@@ -28,7 +30,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(title,
+                    child: Text(infoBo.title,
                         maxLines: 2,
                         style: TextStyle(color: Colors.black, fontSize: 16)),
                   )
@@ -37,15 +39,14 @@ class _RoomDetailState extends State<RoomDetailPage> {
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("具体内容",
+                    child: Text(infoBo.content,
                         maxLines: 4,
                         style: TextStyle(color: Colors.black54, fontSize: 15)),
                   )
                 ]),
                 SizedBox(height: 10),
                 Container(
-                  margin:
-                      EdgeInsets.only(top: 20, bottom: 10),
+                  margin: EdgeInsets.only(top: 20, bottom: 10),
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 1),
                       color: Colors.white,
@@ -69,7 +70,8 @@ class _RoomDetailState extends State<RoomDetailPage> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () {
-                        Toast.show("收到参数=" + answerController.text.toString(), context,
+                        Toast.show(
+                            "收到参数=" + answerController.text.toString(), context,
                             duration: Toast.LENGTH_SHORT,
                             gravity: Toast.CENTER);
                       },

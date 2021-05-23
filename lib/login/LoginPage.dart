@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_study/home/MainPage.dart';
 import 'package:flutter_study/login/RegisterPage.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_study/net/bean/LoginBo.dart';
+import '../base/Config.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -91,26 +95,40 @@ class EditTextState extends State<EditTextWidget> {
         ));
   }
 
+//去登录
+  _startLogin(username, pwd) async {
+    var result = await Dio().post("${Config.domain}/user/login",
+        data: {'username': username, 'password': pwd});
+    var loginBo = LoginBo.fromJson(result.data);
+    if (loginBo.code == 0) {
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => MainPage()));
+    } else {
+      Toast.show(loginBo.msg, context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    }
+  }
+
   void _loginClick() {
-    // String hint = "";
-    // if (phoneController.text.length == 0) {
-    //   hint = "账号不能为空";
-    // } else if (phoneController.text.length < 3) {
-    //   hint = "账号至少3位数";
-    // } else if (passController.text.length == 0) {
-    //   hint = "密码不能为空";
-    // }
-    // if (hint.isNotEmpty) {
-    //   showDialog(
-    //       context: context,
-    //       builder: (context) => AlertDialog(
-    //             title: Text(hint),
-    //           ));
-    // }
+    String hint = "";
+    var userName = phoneController.text.trim();
+    var pwd = passController.text.trim();
+    if (userName.length == 0) {
+      hint = "账号不能为空";
+    } else if (userName.length < 3) {
+      hint = "账号至少3位数";
+    } else if (pwd.length == 0) {
+      hint = "密码不能为空";
+    }
+    if (hint.isNotEmpty) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(hint),
+              ));
+    }
     // phoneController.clear();
     // passController.clear();
-
-    Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => MainPage()));
+    _startLogin(userName, pwd);
   }
 }
