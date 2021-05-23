@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/net/bean/ClassRoomBo.dart';
 import 'package:toast/toast.dart';
 
 class RoomDetailPage extends StatefulWidget {
@@ -13,8 +12,8 @@ class _RoomDetailState extends State<RoomDetailPage> {
   TextEditingController answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final RoomInfoBo infoBo =
-        ModalRoute.of(context).settings.arguments as RoomInfoBo;
+    final infoBo = "test121";
+    //ModalRoute.of(context).settings.arguments as RoomInfoBo;
     // Toast.show("收到参数=" + title, context,
     //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
     return Scaffold(
@@ -30,7 +29,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(infoBo.title,
+                    child: Text(infoBo,
                         maxLines: 2,
                         style: TextStyle(color: Colors.black, fontSize: 16)),
                   )
@@ -39,7 +38,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(infoBo.content,
+                    child: Text(infoBo,
                         maxLines: 4,
                         style: TextStyle(color: Colors.black54, fontSize: 15)),
                   )

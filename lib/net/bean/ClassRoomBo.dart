@@ -1,7 +1,7 @@
 class ClassRoomBo {
   int code;
   String msg;
-  List<WeekRoomBo> data;
+  List<RoomInfoBo> data;
   int count;
 
   ClassRoomBo({this.code, this.msg, this.data, this.count});
@@ -10,9 +10,9 @@ class ClassRoomBo {
     code = json['code'];
     msg = json['msg'];
     if (json['data'] != null) {
-      data = new List<WeekRoomBo>();
+      data = new List<RoomInfoBo>();
       json['data'].forEach((v) {
-        data.add(new WeekRoomBo.fromJson(v));
+        data.add(new RoomInfoBo.fromJson(v));
       });
     }
     count = json['count'];
@@ -30,7 +30,7 @@ class ClassRoomBo {
   }
 }
 
-class WeekRoomBo {
+class RoomInfoBo {
   int courseId;
   String type;
   String title;
@@ -42,7 +42,7 @@ class WeekRoomBo {
   String createTime;
   String updateTime;
 
-  WeekRoomBo(
+  RoomInfoBo(
       {this.courseId,
       this.type,
       this.title,
@@ -54,7 +54,7 @@ class WeekRoomBo {
       this.createTime,
       this.updateTime});
 
-  WeekRoomBo.fromJson(Map<String, dynamic> json) {
+  RoomInfoBo.fromJson(Map<String, dynamic> json) {
     courseId = json['courseId'];
     type = json['type'];
     title = json['title'];

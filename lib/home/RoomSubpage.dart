@@ -13,19 +13,7 @@ class RoomSubpage extends StatefulWidget {
 }
 
 class _RoomState extends State<RoomSubpage> {
-  // List<String> titles = [
-  //   'Sun12',
-  //   'Moon12',
-  //   'Star',
-  //   'Sun',
-  //   'Moon',
-  //   'Star',
-  //   'Sun',
-  //   'Moon',
-  //   'Star',
-  //   "wangwu"
-  // ];
-  List<WeekRoomBo> _roomList = [];
+  List<RoomInfoBo> _roomList = [];
 
   @override
   void initState() {
@@ -80,9 +68,9 @@ class _RoomState extends State<RoomSubpage> {
                           MaterialPageRoute(
                             builder: (context) => RoomDetailPage(),
                             //传递参数
-                            settings: RouteSettings(
-                              arguments: this._roomList[index],
-                            ),
+                            // settings: RouteSettings(
+                            //   arguments: this._roomList[index],
+                            // ),
                           ));
                     },
                     child: Column(
