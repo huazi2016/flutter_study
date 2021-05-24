@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_study/base/SpUtils.dart';
 import 'package:flutter_study/home/MainPage.dart';
 import 'package:flutter_study/login/RegisterPage.dart';
 import 'package:dio/dio.dart';
@@ -103,6 +104,8 @@ class EditTextState extends State<EditTextWidget> {
     if (loginBo.code == 0) {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => MainPage()));
+      SpUtils.instance.saveString("headImg", loginBo.data.avatar);
+      SpUtils.instance.saveString("nickname", loginBo.data.username);
     } else {
       Toast.show(loginBo.msg, context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
@@ -126,6 +129,7 @@ class EditTextState extends State<EditTextWidget> {
           builder: (context) => AlertDialog(
                 title: Text(hint),
               ));
+      return;
     }
     // phoneController.clear();
     // passController.clear();

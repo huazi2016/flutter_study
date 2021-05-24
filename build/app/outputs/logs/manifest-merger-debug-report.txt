@@ -5,6 +5,7 @@ INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/Androi
 INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml:1:1-41:12
 INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml:1:1-41:12
 MERGED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml:1:1-41:12
+MERGED from [:shared_preferences] /Users/skycn/flutter_app/flutter_study/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/0e5005cbdcf98579e7f9ab7b456a9e0f/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.0.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/e0a3cbe66f34bb00b4c3d679e4585428/jetified-activity-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/20a5614589485fdd0b11041124e469e1/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -93,6 +94,8 @@ uses-sdk
 INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml
 INJECTED from /Users/skycn/flutter_app/flutter_study/android/app/src/main/AndroidManifest.xml
+MERGED from [:shared_preferences] /Users/skycn/flutter_app/flutter_study/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Users/skycn/flutter_app/flutter_study/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/0e5005cbdcf98579e7f9ab7b456a9e0f/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/0e5005cbdcf98579e7f9ab7b456a9e0f/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.0.0] /Users/skycn/.gradle/caches/transforms-2/files-2.1/e0a3cbe66f34bb00b4c3d679e4585428/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
