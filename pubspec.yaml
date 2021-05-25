@@ -35,8 +35,11 @@ dependencies:
   webview_flutter: ^1.0.6
   #状态管理
   provider: ^4.3.2
-    #懒加载的viewpager
+  #懒加载的viewpager
   lazy_indexed_stack: ^0.0.1
+  #版本信息
+  package_info: ^2.0.0
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:

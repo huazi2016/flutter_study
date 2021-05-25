@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/SpUtils.dart';
+import 'package:package_info/package_info.dart';
 
 class MineSubpage extends StatefulWidget {
   MineSubpage({Key key}) : super(key: key);
@@ -36,7 +38,7 @@ class _MineState extends State<MineSubpage> {
                   height: 80,
                   child: CircleAvatar(
                     radius: 45,
-                    backgroundImage: NetworkImage(headUrl),
+                    child: CachedNetworkImage(imageUrl: headUrl),
                   ),
                 ),
                 Text(
@@ -53,16 +55,42 @@ class _MineState extends State<MineSubpage> {
             shrinkWrap: true,
             children: [
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text(
-                  "软件信息",
-                  style: TextStyle(color: Colors.black54),
-                ),
-                trailing: Icon(
-                  Icons.keyboard_arrow_right,
-                  color: Colors.black38,
-                ),
-              ),
+                  leading: Icon(Icons.info),
+                  title: Text(
+                    "软件信息",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  trailing: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: Colors.black38,
+                  ),
+                  onTap: () => {
+                        PackageInfo.fromPlatform()
+                            .then((packageInfo) => showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    String appName = packageInfo.appName;
+                                    String packageName =
+                                        packageInfo.packageName;
+                                    String version = packageInfo.version;
+                                    String buildNumber =
+                                        packageInfo.buildNumber;
+                                    return AlertDialog(
+                                      title: Text('版本信息'),
+                                      content: Text(
+                                          '''app名称:$appName\napp包名:$packageName\napp版本:$version\napp构建号:$buildNumber'''),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('ok'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop('cancel');
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )),
+                      }),
               ListTile(
                 leading: Icon(Icons.list),
                 title: Text(
