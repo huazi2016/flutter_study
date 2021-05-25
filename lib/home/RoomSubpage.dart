@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/home/room/RoomDetailPage.dart';
 import 'package:flutter_study/net/bean/ClassRoomBo.dart';
+import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
 import '../base/Config.dart';
@@ -13,12 +14,14 @@ class RoomSubpage extends StatefulWidget {
 }
 
 class _RoomState extends State<RoomSubpage> {
-  List<RoomInfoBo> _roomList = [];
+  List<RoomDetailBo> _roomList = [];
+  TextEditingController wordController;
 
   @override
   void initState() {
+    wordController = TextEditingController();
     super.initState();
-    _getTestNet();
+    _getTestNet("");
   }
 
   @override
@@ -28,14 +31,16 @@ class _RoomState extends State<RoomSubpage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Container(
-          margin: EdgeInsets.only(left: 15, right: 15),
+          margin: EdgeInsets.only(left: 15, right: 5),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1),
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(5))),
           alignment: Alignment.center,
           height: 36,
+          //width: 300,
           child: TextField(
+            controller: wordController,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 //hasFloatingPlaceholder: true,
@@ -44,6 +49,23 @@ class _RoomState extends State<RoomSubpage> {
             autofocus: false,
           ),
         ),
+        actions: <Widget>[
+          InkWell(
+            child: Container(
+                margin: EdgeInsets.only(right: 15),
+                width: 50,
+                height: 50,
+                child: Center(
+                  child: Text("搜索",
+                      style: TextStyle(fontSize: 18, color: Colors.white)),
+                )),
+            onTap: () {
+              setState(() {
+                _getTestNet(wordController.text.trim());
+              });
+            },
+          )
+        ],
       ),
       resizeToAvoidBottomInset: false,
       body: _classroomWidget(),
@@ -160,17 +182,13 @@ class _RoomState extends State<RoomSubpage> {
     }
   }
 
-  _getTestNet() async {
-    var api = "${Config.domain}/course/search";
-    var result = await Dio().post(api, data: {"title": "语文"});
-    var roomList = ClassRoomBo.fromJson(result.data);
-    // Toast.show("获取到了" + _roomList.length.toString(), context,
-    //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+  _getTestNet(title) async {
+    var api = "${Config.domain}/question/search";
+    var result = await Dio()
+        .post(api, data: {"course": "", "isPaper": false, "title": title});
+    var roomList = RoomBo.fromJson(result.data);
     setState(() {
       _roomList = roomList.data;
-      Toast.show("获取到了" + _roomList.length.toString(), context,
-          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-      //print("获取到了" + _roomList.length.toString());
     });
   }
 }
