@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/SpUtils.dart';
 
 class MineSubpage extends StatefulWidget {
@@ -15,8 +16,7 @@ class _MineState extends State<MineSubpage> {
   @override
   void initState() {
     super.initState();
-    SpUtils.instance.getString("headImg").then((value) => headUrl = value);
-    SpUtils.instance.getString("nickname").then((value) => nickname = value);
+    init().then((value) => setState(() {}));
   }
 
   @override
@@ -31,7 +31,7 @@ class _MineState extends State<MineSubpage> {
             child: Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 30, right: 10),
+                  margin: EdgeInsets.only(left: 30, right: 20),
                   width: 80,
                   height: 80,
                   child: CircleAvatar(
@@ -46,29 +46,100 @@ class _MineState extends State<MineSubpage> {
               ],
             ),
           ),
-          Text("test"),
-          ListView.builder(
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.all(10.0),
-              cacheExtent:30,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Icon(Icons.list),
-                  title: Text("标题"),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                );
-              },
-              itemCount: 10)
+          ListView(
+            scrollDirection: Axis.vertical,
+            padding: EdgeInsets.all(10.0),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: [
+              ListTile(
+                leading: Icon(Icons.info),
+                title: Text(
+                  "软件信息",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black38,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.list),
+                title: Text(
+                  "课程表",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black38,
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: Icon(Icons.verified_user),
+                title: Text(
+                  "版本信息",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black38,
+                ),
+                onTap: () {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("当前已经是最新版本"),
+                  ));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text(
+                  "退出登录",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black38,
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('提示'),
+                          content: Text('确认退出登录吗？'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('取消'),
+                              onPressed: () {
+                                Navigator.of(context).pop('cancel');
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('确认'),
+                              onPressed: () {
+                                SpUtils.instance.saveString("headImg", "");
+                                SpUtils.instance.saveString("nickname", "");
+                                Navigator.of(context).pop('ok');
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    RoutePages.login,
+                                    (Route<dynamic> route) => false);
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 
-  String _setHeadUrl() {
-    setState(() {
-      var headUrl = "";
-      SpUtils.instance.getString("headImg").then((value) => headUrl = value);
-      return headUrl;
-    });
+  Future init() async {
+    headUrl = await SpUtils.instance.getString("headImg");
+    nickname = await SpUtils.instance.getString("nickname");
   }
 }

@@ -39,7 +39,6 @@ class _RoomState extends State<RoomSubpage> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 //hasFloatingPlaceholder: true,
-                contentPadding: EdgeInsets.all(10),
                 prefixIcon: Icon(Icons.search),
                 hintText: "输入关键字"),
             autofocus: false,
