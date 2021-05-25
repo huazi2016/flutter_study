@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/home/SelfSubpage.dart';
+import 'package:lazy_indexed_stack/lazy_indexed_stack.dart';
 import 'RoomSubpage.dart';
 import 'SelfSubpage.dart';
 import 'NewsSubpage.dart';
 import 'MineSubpage.dart';
 
-class MainPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return MainState();
-  }
-}
+class MainPage extends StatelessWidget {
+  const MainPage({Key key}) : super(key: key);
 
-class MainState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //margin: EdgeInsets.only(top: 22),
-      child: Scaffold(
-        body: BottomTabs(),
-      ),
-    );
+    return BottomTabs();
   }
 }
 
@@ -39,30 +30,35 @@ class BottomTabState extends State<BottomTabs> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        top: false,
         child: Scaffold(
-      // appBar: AppBar(
-      //   title: Text("我是标题"),
-      // ),
-      body: this._pageList[this._currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: this._currentIndex,
-        onTap: (index) {
-          setState(() {
-            print(index.toString());
-            this._currentIndex = index;
-          });
-        },
-        //超过2个以上, 务必设置type
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("课程")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.category), title: Text("自学")),
-          BottomNavigationBarItem(icon: Icon(Icons.message), title: Text("消息")),
-          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text("我的")),
-        ],
-      ),
-      resizeToAvoidBottomInset: false,
-    ));
+          body: LazyIndexedStack(
+            itemBuilder: (context, index) => this._pageList[this._currentIndex],
+            itemCount: this._pageList.length,
+            index: this._currentIndex,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: this._currentIndex,
+            onTap: (index) {
+              setState(() {
+                print(index.toString());
+                this._currentIndex = index;
+              });
+            },
+            //超过2个以上, 务必设置type
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home), title: Text("课程")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.category), title: Text("自学")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.message), title: Text("消息")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.people), title: Text("我的")),
+            ],
+          ),
+          resizeToAvoidBottomInset: false,
+        ));
   }
 }

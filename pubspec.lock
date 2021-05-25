@@ -107,6 +107,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.3"
+  lazy_indexed_stack:
+    dependency: "direct main"
+    description:
+      name: lazy_indexed_stack
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
