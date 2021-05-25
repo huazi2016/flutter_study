@@ -31,6 +31,10 @@ dependencies:
   toast: ^0.1.5
   dio: ^4.0.0
   shared_preferences: ^2.0.5
+  #网页支持
+  webview_flutter: ^1.0.6
+  #状态管理
+  provider: ^4.3.2
 
 dev_dependencies:
   flutter_test:

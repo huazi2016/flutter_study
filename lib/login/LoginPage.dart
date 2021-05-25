@@ -31,8 +31,24 @@ class EditTextWidget extends StatefulWidget {
 
 class EditTextState extends State<EditTextWidget> {
   //控制器
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+
+  TextEditingController phoneController;
+  TextEditingController passController;
+
+  @override
+  void initState() {
+    phoneController = TextEditingController();
+    passController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    phoneController?.dispose();
+    passController?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +70,7 @@ class EditTextState extends State<EditTextWidget> {
                     contentPadding: EdgeInsets.all(10),
                     icon: Icon(Icons.account_balance),
                     labelText: "请输入账号"),
-                autofocus: true,
+                autofocus: false,
               ),
               SizedBox(height: 12),
               TextField(
