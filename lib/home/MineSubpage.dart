@@ -34,16 +34,17 @@ class _MineState extends State<MineSubpage> {
               children: [
                 Container(
                   margin: EdgeInsets.only(left: 30, right: 20),
-                  width: 80,
-                  height: 80,
+                  width: 68,
+                  height: 68,
                   child: CircleAvatar(
-                    radius: 45,
-                    child: CachedNetworkImage(imageUrl: headUrl),
+                    radius: 36,
+                    //child: CachedNetworkImage(imageUrl: headUrl),
+                    backgroundImage: NetworkImage(headUrl),
                   ),
                 ),
                 Text(
                   nickname,
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             ),
@@ -54,80 +55,85 @@ class _MineState extends State<MineSubpage> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
-              ListTile(
-                  leading: Icon(Icons.info),
-                  title: Text(
-                    "软件信息",
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                  trailing: Icon(
-                    Icons.keyboard_arrow_right,
-                    color: Colors.black38,
-                  ),
-                  onTap: () => {
-                        PackageInfo.fromPlatform()
-                            .then((packageInfo) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    String appName = packageInfo.appName;
-                                    String packageName =
-                                        packageInfo.packageName;
-                                    String version = packageInfo.version;
-                                    String buildNumber =
-                                        packageInfo.buildNumber;
-                                    return AlertDialog(
-                                      title: Text('版本信息'),
-                                      content: Text(
-                                          '''app名称:$appName\napp包名:$packageName\napp版本:$version\napp构建号:$buildNumber'''),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('ok'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop('cancel');
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                )),
-                      }),
-              ListTile(
+              Card(
+                  child: ListTile(
+                      leading: Icon(Icons.info),
+                      title: Text(
+                        "软件信息",
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.black87,
+                      ),
+                      onTap: () => {
+                            PackageInfo.fromPlatform()
+                                .then((packageInfo) => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        String appName = packageInfo.appName;
+                                        String packageName =
+                                            packageInfo.packageName;
+                                        String version = packageInfo.version;
+                                        String buildNumber =
+                                            packageInfo.buildNumber;
+                                        return AlertDialog(
+                                          title: Text('版本信息'),
+                                          content: Text(
+                                              '''app名称:$appName\napp包名:$packageName\napp版本:$version\napp构建号:$buildNumber'''),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('ok'),
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop('cancel');
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    )),
+                          })),
+              Card(
+                  child: ListTile(
                 leading: Icon(Icons.list),
                 title: Text(
                   "课程表",
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(color: Colors.black87),
                 ),
                 trailing: Icon(
                   Icons.keyboard_arrow_right,
-                  color: Colors.black38,
+                  color: Colors.black87,
                 ),
                 onTap: () {},
-              ),
-              ListTile(
+              )),
+              Card(
+                  child: ListTile(
                 leading: Icon(Icons.verified_user),
                 title: Text(
                   "版本信息",
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(color: Colors.black87),
                 ),
                 trailing: Icon(
                   Icons.keyboard_arrow_right,
-                  color: Colors.black38,
+                  color: Colors.black87,
                 ),
                 onTap: () {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("当前已经是最新版本"),
                   ));
                 },
-              ),
-              ListTile(
+              )),
+              Card(
+                  child: ListTile(
                 leading: Icon(Icons.logout),
                 title: Text(
                   "退出登录",
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(color: Colors.black87),
                 ),
                 trailing: Icon(
                   Icons.keyboard_arrow_right,
-                  color: Colors.black38,
+                  color: Colors.black87,
                 ),
                 onTap: () {
                   showDialog(
@@ -158,7 +164,7 @@ class _MineState extends State<MineSubpage> {
                         );
                       });
                 },
-              ),
+              )),
             ],
           )
         ],
