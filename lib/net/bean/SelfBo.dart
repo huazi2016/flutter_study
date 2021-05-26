@@ -60,8 +60,8 @@ class SelfInfoBo {
     title = json['title'];
     content = json['content'];
     image = json['image'];
-    video = json['video'];
-    file = json['file'];
+    video = json['video']??'';
+    file = json['file']??'';
     teacher = json['teacher'];
     createTime = json['createTime'];
     updateTime = json['updateTime'];

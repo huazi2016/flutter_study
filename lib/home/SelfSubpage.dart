@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/home/room/RoomDetailPage.dart';
 import 'package:flutter_study/net/bean/SelfBo.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
@@ -89,15 +90,8 @@ class _SelfState extends State<SelfSubpage> {
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => RoomDetailPage(),
-                      //       //传递参数
-                      //       // settings: RouteSettings(
-                      //       //   arguments: thself[index],
-                      //       // ),
-                      //     ));
+                      Navigator.pushNamed(context, RoutePages.self_detail,
+                          arguments: _selfList[index]);
                     },
                     child: Column(
                       children: <Widget>[

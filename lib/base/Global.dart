@@ -13,17 +13,16 @@ class Global {
 
   static Future init() async {
     final stopwatch = Stopwatch()..start();
-
     try {
       //kv存储
       _prefs = await SharedPreferences.getInstance();
       var jsonString = _prefs.getString(_key_profile);
       print("历史存储$jsonString");
+      //网络库初始化
+      GitNet.init();
     } catch (e) {
       print(e);
     }
-    //网络库初始化
-    GitNet.init();
     var diff = 3 * 1000 - stopwatch.elapsedMilliseconds;
     diff = diff < 0 ? 0 : diff;
     print("初始化耗时:$diff");
