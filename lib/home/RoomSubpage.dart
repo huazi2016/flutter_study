@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/home/room/RoomDetailPage.dart';
-import 'package:flutter_study/net/bean/ClassRoomBo.dart';
+import 'package:flutter_study/net/bean/SelfBo.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
 import '../base/Config.dart';
+import '../net/bean/RegisterBo.dart';
 
 class RoomSubpage extends StatefulWidget {
   RoomSubpage({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class _RoomState extends State<RoomSubpage> {
   void initState() {
     wordController = TextEditingController();
     super.initState();
-    _getTestNet("");
+    _getQuestionList("");
   }
 
   @override
@@ -38,12 +39,12 @@ class _RoomState extends State<RoomSubpage> {
               borderRadius: BorderRadius.all(Radius.circular(5))),
           alignment: Alignment.center,
           height: 36,
-          //width: 300,
           child: TextField(
             controller: wordController,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 //hasFloatingPlaceholder: true,
+                contentPadding: EdgeInsets.only(top: 0.1),
                 prefixIcon: Icon(Icons.search),
                 hintText: "输入关键字"),
             autofocus: false,
@@ -61,7 +62,7 @@ class _RoomState extends State<RoomSubpage> {
                 )),
             onTap: () {
               setState(() {
-                _getTestNet(wordController.text.trim());
+                _getQuestionList(wordController.text.trim());
               });
             },
           )
@@ -69,6 +70,10 @@ class _RoomState extends State<RoomSubpage> {
       ),
       resizeToAvoidBottomInset: false,
       body: _classroomWidget(),
+      floatingActionButton: FloatingActionButton(
+        child: Text("发布"),
+        onPressed: () {},
+      ),
     );
   }
 
@@ -102,7 +107,7 @@ class _RoomState extends State<RoomSubpage> {
                           child: Stack(children: <Widget>[
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(this._roomList[index].type,
+                              child: Text("题型：" + this._roomList[index].type,
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 14)),
                             ),
@@ -113,10 +118,13 @@ class _RoomState extends State<RoomSubpage> {
                                   height: 25,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      setState(() {
-                                        //模拟删除
-                                        this._roomList.removeAt(index);
-                                      });
+                                      // setState(() {
+                                      //   //模拟删除
+                                      //   this._roomList.removeAt(index);
+                                      // });
+                                      _deleteQuestion(
+                                          this._roomList[index].questionId,
+                                          index);
                                     },
                                     child: Text("删除"),
                                   )),
@@ -182,13 +190,32 @@ class _RoomState extends State<RoomSubpage> {
     }
   }
 
-  _getTestNet(title) async {
+  _getQuestionList(title) async {
     var api = "${Config.domain}/question/search";
     var result = await Dio()
         .post(api, data: {"course": "", "isPaper": false, "title": title});
     var roomList = RoomBo.fromJson(result.data);
-    setState(() {
-      _roomList = roomList.data;
-    });
+    if (roomList.code == 0) {
+      setState(() {
+        _roomList = roomList.data;
+      });
+    } else {
+      Toast.show("获取异常, 暂无数据", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    }
+  }
+
+  _deleteQuestion(questionId, index) async {
+    var api = "${Config.domain}/question/delete";
+    var result = await Dio().get(api + "?questionId=" + questionId.toString());
+    var roomBo = RegisterBo.fromJson(result.data);
+    if (roomBo.code == 0) {
+      setState(() {
+        this._roomList.removeAt(index);
+      });
+    } else {
+      Toast.show("删除失败", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    }
   }
 }

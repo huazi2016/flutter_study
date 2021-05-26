@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/home/SelfSubpage.dart';
 import 'package:lazy_indexed_stack/lazy_indexed_stack.dart';
-import 'RoomSubpage.dart';
-import 'SelfSubpage.dart';
 import 'NewsSubpage.dart';
+import 'RoomSubpage.dart';
 import 'MineSubpage.dart';
 
 class MainPage extends StatelessWidget {

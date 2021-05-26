@@ -1,18 +1,18 @@
-class ClassRoomBo {
+class SelfBo {
   int code;
   String msg;
-  List<RoomInfoBo> data;
+  List<SelfInfoBo> data;
   int count;
 
-  ClassRoomBo({this.code, this.msg, this.data, this.count});
+  SelfBo({this.code, this.msg, this.data, this.count});
 
-  ClassRoomBo.fromJson(Map<String, dynamic> json) {
+  SelfBo.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     msg = json['msg'];
     if (json['data'] != null) {
-      data = new List<RoomInfoBo>();
+      data = new List<SelfInfoBo>();
       json['data'].forEach((v) {
-        data.add(new RoomInfoBo.fromJson(v));
+        data.add(new SelfInfoBo.fromJson(v));
       });
     }
     count = json['count'];
@@ -30,7 +30,7 @@ class ClassRoomBo {
   }
 }
 
-class RoomInfoBo {
+class SelfInfoBo {
   int courseId;
   String type;
   String title;
@@ -42,7 +42,7 @@ class RoomInfoBo {
   String createTime;
   String updateTime;
 
-  RoomInfoBo(
+  SelfInfoBo(
       {this.courseId,
       this.type,
       this.title,
@@ -54,7 +54,7 @@ class RoomInfoBo {
       this.createTime,
       this.updateTime});
 
-  RoomInfoBo.fromJson(Map<String, dynamic> json) {
+  SelfInfoBo.fromJson(Map<String, dynamic> json) {
     courseId = json['courseId'];
     type = json['type'];
     title = json['title'];
