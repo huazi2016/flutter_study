@@ -34,6 +34,7 @@ class MyAppState extends State<MyApp> {
           ),
           routes: RoutePages.routes,
           initialRoute: RoutePages.splash,
+          //initialRoute: RoutePages.main,
           onUnknownRoute: (settings) {
             // if (!Global.isRelease) showToast("路由跳转未知:${settings.name}");
             return null;

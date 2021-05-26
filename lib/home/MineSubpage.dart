@@ -152,8 +152,9 @@ class _MineState extends State<MineSubpage> {
                             FlatButton(
                               child: Text('确认'),
                               onPressed: () {
-                                SpUtils.instance.saveString("headImg", "");
-                                SpUtils.instance.saveString("nickname", "");
+                                SpUtils.instance.saveString(SpKeys.SP_HEADURL, "");
+                                SpUtils.instance.saveString(SpKeys.SP_ROLE, "");
+                                SpUtils.instance.saveString(SpKeys.SP_USERNAME, "");
                                 Navigator.of(context).pop('ok');
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     RoutePages.login,
@@ -173,7 +174,7 @@ class _MineState extends State<MineSubpage> {
   }
 
   Future init() async {
-    headUrl = await SpUtils.instance.getString("headImg");
-    nickname = await SpUtils.instance.getString("nickname");
+    headUrl = await SpUtils.instance.getString(SpKeys.SP_HEADURL);
+    nickname = await SpUtils.instance.getString(SpKeys.SP_USERNAME);
   }
 }

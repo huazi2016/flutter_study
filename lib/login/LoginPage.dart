@@ -120,8 +120,9 @@ class EditTextState extends State<EditTextWidget> {
     if (loginBo.code == 0) {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => MainPage()));
-      SpUtils.instance.saveString("headImg", loginBo.data.avatar);
-      SpUtils.instance.saveString("nickname", loginBo.data.username);
+      SpUtils.instance.saveString(SpKeys.SP_HEADURL, loginBo.data.avatar);
+      SpUtils.instance.saveString(SpKeys.SP_ROLE, loginBo.data.role);
+      SpUtils.instance.saveString(SpKeys.SP_USERNAME, loginBo.data.username);
     } else {
       Toast.show(loginBo.msg, context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);

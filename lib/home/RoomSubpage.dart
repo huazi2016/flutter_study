@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/home/room/AddRoomPage.dart';
 import 'package:flutter_study/home/room/RoomDetailPage.dart';
 import 'package:flutter_study/net/bean/SelfBo.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
@@ -72,7 +73,13 @@ class _RoomState extends State<RoomSubpage> {
       body: _classroomWidget(),
       floatingActionButton: FloatingActionButton(
         child: Text("发布"),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddRoomPage(),
+              ));
+        },
       ),
     );
   }
@@ -92,11 +99,8 @@ class _RoomState extends State<RoomSubpage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RoomDetailPage(),
-                            //传递参数
-                            // settings: RouteSettings(
-                            //   arguments: this._roomList[index],
-                            // ),
+                            builder: (context) =>
+                                RoomDetailPage(detailBo: this._roomList[index]),
                           ));
                     },
                     child: Column(
@@ -118,10 +122,6 @@ class _RoomState extends State<RoomSubpage> {
                                   height: 25,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // setState(() {
-                                      //   //模拟删除
-                                      //   this._roomList.removeAt(index);
-                                      // });
                                       _deleteQuestion(
                                           this._roomList[index].questionId,
                                           index);

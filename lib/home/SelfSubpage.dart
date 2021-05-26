@@ -162,9 +162,19 @@ class _SelfState extends State<SelfSubpage> {
                           ]),
                         ),
                         SizedBox(height: 8),
-                        Container(
-                          height: 100,
-                          child: Image.network(this._selfList[index].image, fit: BoxFit.fill),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          child: Stack(children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                height: 100,
+                                child: Image.network(
+                                    this._selfList[index].image,
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                          ]),
                         ),
                         SizedBox(height: 8),
                         Padding(

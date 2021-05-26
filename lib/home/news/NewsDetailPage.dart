@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/base/SpUtils.dart';
 import 'package:flutter_study/base/utils/ToastUtil.dart';
 import 'package:flutter_study/net/bean/RegisterBo.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_study/base/Config.dart';
 
-class RoomDetailPage extends StatefulWidget {
+class NewsDetailPage extends StatefulWidget {
   final RoomDetailBo detailBo;
   // RoomDetailPage({Key key}) : super(key: key);
-  RoomDetailPage({Key key, @required this.detailBo}) : super(key: key);
+  NewsDetailPage({Key key, @required this.detailBo}) : super(key: key);
 
   @override
-  _RoomDetailState createState() => _RoomDetailState();
+  _NewsDetailState createState() => _NewsDetailState();
 }
 
-class _RoomDetailState extends State<RoomDetailPage> {
+class _NewsDetailState extends State<NewsDetailPage> {
   TextEditingController answerController = TextEditingController();
   bool isShow = true;
-  var userName = "";
-
-  @override
-  void initState() {
-    super.initState();
-    init().then((value) => setState(() {}));
-  }
-
   @override
   Widget build(BuildContext context) {
-    ToastUtil.showToastBottom(context, userName);
+    //ToastUtil.showToastBottom(context, widget.detailBo.title);
     return Scaffold(
         backgroundColor: Color(0xfff4f4f4),
         appBar: AppBar(title: Text("详情"), centerTitle: true),
@@ -99,7 +90,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
                             String anwser = answerController.text.trim();
                             if (anwser.isNotEmpty) {
                               _summitAnswer(
-                                  widget.detailBo.questionId, userName, anwser);
+                                  widget.detailBo.questionId, "张三", anwser);
                             } else {
                               ToastUtil.showToastBottom(context, "答案不能为空");
                             }
@@ -110,31 +101,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
             )));
   }
 
-   Future init() async {
-    userName = await SpUtils.instance.getString(SpKeys.SP_USERNAME);
-  }
-
   _summitAnswer(questionId, student, anwser) async {
-    var api = "${Config.domain}/answer/add";
-    var result = await Dio().post(api, data: {
-      "questionId": questionId.toString(),
-      "student": student,
-      "anwser": anwser
-    });
-    var roomBo = RegisterBo.fromJson(result.data);
-    var sucessStr = "提交完成";
-    if (roomBo.code == 0) {
-      setState(() {
-        //显示答案
-        isShow = false;
-      });
-    } else {
-      sucessStr = "提交失败, 请稍后重试";
-    }
-    ToastUtil.showToastBottom(context, sucessStr);
-  }
-
-  _getQuestionAnswer(questionId, student, anwser) async {
     var api = "${Config.domain}/answer/add";
     var result = await Dio().post(api, data: {
       "questionId": questionId.toString(),

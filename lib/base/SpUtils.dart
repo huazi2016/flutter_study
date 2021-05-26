@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SpKeys {
   static const SP_HEADURL = "spHeadUrl";
   static const SP_ROLE = "spRole";
+  static const SP_USERNAME = "spUserName";
 }
 
 class SpUtils {
