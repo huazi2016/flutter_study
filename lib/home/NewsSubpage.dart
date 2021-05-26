@@ -90,15 +90,11 @@ class _NewsState extends State<NewsSubpage> {
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RoomDetailPage(),
-                            //传递参数
-                            // settings: RouteSettings(
-                            //   arguments: this._newsList[index],
-                            // ),
-                          ));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => RoomDetailPage(detailBo: _newsList[index]),
+                      //     ));
                     },
                     child: Column(
                       children: <Widget>[

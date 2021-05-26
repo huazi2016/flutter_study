@@ -89,15 +89,15 @@ class _SelfState extends State<SelfSubpage> {
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RoomDetailPage(),
-                            //传递参数
-                            // settings: RouteSettings(
-                            //   arguments: thself[index],
-                            // ),
-                          ));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => RoomDetailPage(),
+                      //       //传递参数
+                      //       // settings: RouteSettings(
+                      //       //   arguments: thself[index],
+                      //       // ),
+                      //     ));
                     },
                     child: Column(
                       children: <Widget>[

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/SpUtils.dart';
 import 'package:flutter_study/base/utils/ToastUtil.dart';
+import 'package:flutter_study/net/bean/AnswerBo.dart';
 import 'package:flutter_study/net/bean/RegisterBo.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:dio/dio.dart';
@@ -19,16 +20,22 @@ class _RoomDetailState extends State<RoomDetailPage> {
   TextEditingController answerController = TextEditingController();
   bool isShow = true;
   var userName = "";
+  var role = "";
+  String replyContent = "";
 
   @override
   void initState() {
     super.initState();
     init().then((value) => setState(() {}));
+    String student = "";
+    if (role == "学生") {
+      student = userName;
+    }
+    _getQuestionAnswer(widget.detailBo.questionId, student);
   }
 
   @override
   Widget build(BuildContext context) {
-    ToastUtil.showToastBottom(context, userName);
     return Scaffold(
         backgroundColor: Color(0xfff4f4f4),
         appBar: AppBar(title: Text("详情"), centerTitle: true),
@@ -85,7 +92,11 @@ class _RoomDetailState extends State<RoomDetailPage> {
                         padding: EdgeInsets.only(top: 20),
                         child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text("你的答案：" + answerController.text.trim(),
+                            child: Text(
+                                "你的答案：" +
+                                    (isShow
+                                        ? answerController.text.trim()
+                                        : replyContent),
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 16))))),
                 SizedBox(height: 30),
@@ -110,8 +121,9 @@ class _RoomDetailState extends State<RoomDetailPage> {
             )));
   }
 
-   Future init() async {
+  Future init() async {
     userName = await SpUtils.instance.getString(SpKeys.SP_USERNAME);
+    role = await SpUtils.instance.getString(SpKeys.SP_ROLE);
   }
 
   _summitAnswer(questionId, student, anwser) async {
@@ -134,23 +146,24 @@ class _RoomDetailState extends State<RoomDetailPage> {
     ToastUtil.showToastBottom(context, sucessStr);
   }
 
-  _getQuestionAnswer(questionId, student, anwser) async {
-    var api = "${Config.domain}/answer/add";
-    var result = await Dio().post(api, data: {
-      "questionId": questionId.toString(),
-      "student": student,
-      "anwser": anwser
-    });
-    var roomBo = RegisterBo.fromJson(result.data);
-    var sucessStr = "提交完成";
-    if (roomBo.code == 0) {
+  _getQuestionAnswer(questionId, student) async {
+    var api = "${Config.domain}/answer/list";
+    var result = await Dio()
+        .get(api + "?questionId=" + questionId + "&student=" + student);
+    var answerBo = AnswerBo.fromJson(result.data);
+    if (answerBo.code == 0) {
       setState(() {
-        //显示答案
-        isShow = false;
+        var dataList = answerBo.data;
+        if (dataList.length > 0) {
+          isShow = false;
+          String answer = dataList[0].anwser;
+          String reply = dataList[0].reply;
+          replyContent = answer + " " + reply;
+        }
       });
     } else {
-      sucessStr = "提交失败, 请稍后重试";
+      String sucessStr = "网络异常，无法获取";
+      ToastUtil.showToastBottom(context, sucessStr);
     }
-    ToastUtil.showToastBottom(context, sucessStr);
   }
 }
