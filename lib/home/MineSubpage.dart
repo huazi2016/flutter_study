@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
+import 'package:flutter_study/base/utils/ToastUtil.dart';
 import 'package:flutter_study/home/ClassSchedulePage.dart';
+import 'package:flutter_study/home/UserInfoPage.dart';
 import 'package:package_info/package_info.dart';
 
 class MineSubpage extends StatefulWidget {
@@ -20,7 +22,7 @@ class _MineState extends State<MineSubpage> {
   void initState() {
     super.initState();
     headUrl = SpUtil.getString(SpKeys.SP_HEADURL);
-    nickname = SpUtil.getUserName();
+    nickname = SpUtil.getNickName();
     _isTeacher = SpUtil.isTeacher();
   }
 
@@ -30,28 +32,54 @@ class _MineState extends State<MineSubpage> {
       body: Column(
         children: <Widget>[
           Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(color: Colors.blueAccent),
-            child: Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 30, right: 20),
-                  width: 68,
-                  height: 68,
-                  child: CircleAvatar(
-                    radius: 36,
-                    //child: CachedNetworkImage(imageUrl: headUrl),
-                    backgroundImage: NetworkImage(headUrl),
-                  ),
-                ),
-                Text(
-                  nickname,
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(color: Colors.blueAccent),
+              child: Stack(children: <Widget>[
+                Positioned(
+                    top: 60,
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 30, right: 20),
+                          width: 68,
+                          height: 68,
+                          child: CircleAvatar(
+                            radius: 36,
+                            //child: CachedNetworkImage(imageUrl: headUrl),
+                            backgroundImage: NetworkImage(headUrl),
+                          ),
+                        ),
+                        Text(
+                          nickname,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ],
+                    )),
+                Positioned(
+                  top: 150,
+                  left: 290,
+                  child: Container(
+                      //借助GestureDetector设置Text点击事件
+                      child: GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade400,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text("去编辑",
+                          style: TextStyle(fontSize: 14, color: Colors.white)),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new UserInfoPage()));
+                    },
+                  )),
+                )
+              ])),
           ListView(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.all(10.0),
@@ -166,6 +194,8 @@ class _MineState extends State<MineSubpage> {
                                 SpUtil.putString(SpKeys.SP_HEADURL, "");
                                 SpUtil.putString(SpKeys.SP_ROLE, "");
                                 SpUtil.putString(SpKeys.SP_USERNAME, "");
+                                SpUtil.putString(SpKeys.SP_NickName, "");
+                                SpUtil.putString(SpKeys.SP_USERID, "");
                                 Navigator.of(context).pop('ok');
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     RoutePages.login,

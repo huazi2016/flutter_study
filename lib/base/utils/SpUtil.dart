@@ -5,6 +5,8 @@ class SpKeys {
   static const SP_HEADURL = "spHeadUrl";
   static const SP_ROLE = "spRole";
   static const SP_USERNAME = "spUserName";
+  static const SP_USERID= "spUserId";
+  static const SP_NickName = "spNickName";
 }
 
 class SpUtil {
@@ -43,6 +45,16 @@ class SpUtil {
   static Future<bool> putString(String key, String value) {
     if (_prefs == null) return null;
     return _prefs.setString(key, value);
+  }
+
+  static String getUserId() {
+    var userId = getString(SpKeys.SP_USERID);
+    return userId;
+  }
+
+  static String getNickName() {
+    var nickName = getString(SpKeys.SP_NickName);
+    return nickName;
   }
 
   static String getUserName() {

@@ -123,6 +123,8 @@ class EditTextState extends State<EditTextWidget> {
       SpUtil.putString(SpKeys.SP_HEADURL, loginBo.data.avatar);
       SpUtil.putString(SpKeys.SP_ROLE, loginBo.data.role);
       SpUtil.putString(SpKeys.SP_USERNAME, loginBo.data.username);
+      SpUtil.putString(SpKeys.SP_NickName, loginBo.data.nickname);
+      SpUtil.putString(SpKeys.SP_USERID, loginBo.data.userId.toString());
     } else {
       Toast.show(loginBo.msg, context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
