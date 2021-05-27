@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/home/room/RoomDetailPage.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/net/bean/NewsBo.dart';
-import 'package:flutter_study/net/bean/SelfBo.dart';
-import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
 import '../base/Config.dart';
@@ -18,64 +16,77 @@ class NewsSubpage extends StatefulWidget {
 class _NewsState extends State<NewsSubpage> {
   List<NewsInfoBo> _newsList = [];
   TextEditingController wordController;
+  bool _isTeacher = false;
 
   @override
   void initState() {
     wordController = TextEditingController();
     super.initState();
+    print("111111111=_NewsState");
     _getQuestionList("");
+    _isTeacher = SpUtil.isTeacher();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff4f4f4),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          margin: EdgeInsets.only(left: 15, right: 5),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1),
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(5))),
-          alignment: Alignment.center,
-          height: 36,
-          child: TextField(
-            controller: wordController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                //hasFloatingPlaceholder: true,
-                contentPadding: EdgeInsets.only(top: 0.1),
-                prefixIcon: Icon(Icons.search),
-                hintText: "输入关键字"),
-            autofocus: false,
+        backgroundColor: Color(0xfff4f4f4),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            margin: EdgeInsets.only(left: 15, right: 5),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            alignment: Alignment.center,
+            height: 36,
+            child: TextField(
+              controller: wordController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  //hasFloatingPlaceholder: true,
+                  contentPadding: EdgeInsets.only(top: 0.1),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "输入关键字"),
+              autofocus: false,
+            ),
           ),
+          actions: <Widget>[
+            InkWell(
+              child: Container(
+                  margin: EdgeInsets.only(right: 15),
+                  width: 50,
+                  height: 50,
+                  child: Center(
+                    child: Text("搜索",
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
+                  )),
+              onTap: () {
+                setState(() {
+                  _getQuestionList(wordController.text.trim());
+                });
+              },
+            )
+          ],
         ),
-        actions: <Widget>[
-          InkWell(
-            child: Container(
-                margin: EdgeInsets.only(right: 15),
-                width: 50,
-                height: 50,
-                child: Center(
-                  child: Text("搜索",
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
-                )),
-            onTap: () {
-              setState(() {
-                _getQuestionList(wordController.text.trim());
-              });
-            },
-          )
-        ],
-      ),
-      resizeToAvoidBottomInset: false,
-      body: _classroomWidget(),
-      floatingActionButton: FloatingActionButton(
-        child: Text("发布"),
-        onPressed: () {},
-      ),
-    );
+        resizeToAvoidBottomInset: false,
+        body: _classroomWidget(),
+        floatingActionButton: Container(
+          child: Visibility(
+            visible: _isTeacher,
+            child: FloatingActionButton(
+              child: Text("发布"),
+              onPressed: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => AddRoomPage(),
+                //     ));
+              },
+            ),
+          ),
+        ));
   }
 
   Widget _classroomWidget() {
@@ -108,24 +119,22 @@ class _NewsState extends State<NewsSubpage> {
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 14)),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SizedBox(
-                                  //width: 50,
-                                  height: 25,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // setState(() {
-                                      //   //模拟删除
-                                      //   this._newsList.removeAt(index);
-                                      // });
-                                      _deleteQuestion(
-                                          this._newsList[index].messageId,
-                                          index);
-                                    },
-                                    child: Text("删除"),
-                                  )),
-                            )
+                            Visibility(
+                                visible: _isTeacher,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: SizedBox(
+                                      //width: 50,
+                                      height: 25,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          _deleteQuestion(
+                                              this._newsList[index].messageId,
+                                              index);
+                                        },
+                                        child: Text("删除"),
+                                      )),
+                                ))
                           ]),
                         ),
                         //SizedBox(height: 5),

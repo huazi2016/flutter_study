@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_study/base/SpUtils.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/home/MainPage.dart';
 import 'package:flutter_study/login/RegisterPage.dart';
 import 'package:dio/dio.dart';
@@ -120,9 +120,9 @@ class EditTextState extends State<EditTextWidget> {
     if (loginBo.code == 0) {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => MainPage()));
-      SpUtils.instance.saveString(SpKeys.SP_HEADURL, loginBo.data.avatar);
-      SpUtils.instance.saveString(SpKeys.SP_ROLE, loginBo.data.role);
-      SpUtils.instance.saveString(SpKeys.SP_USERNAME, loginBo.data.username);
+      SpUtil.putString(SpKeys.SP_HEADURL, loginBo.data.avatar);
+      SpUtil.putString(SpKeys.SP_ROLE, loginBo.data.role);
+      SpUtil.putString(SpKeys.SP_USERNAME, loginBo.data.username);
     } else {
       Toast.show(loginBo.msg, context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/base/utils/ToastUtil.dart';
 import 'package:flutter_study/net/bean/RegisterBo.dart';
 import 'package:dio/dio.dart';
@@ -21,6 +22,14 @@ class _AddRoomState extends State<AddRoomPage> {
   int groupValue = 0;
   String _selectText = "单选题";
   bool isShow = true;
+  String _userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _userName = SpUtil.getUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     //ToastUtil.showToastBottom(context, widget.detailBo.title);
@@ -204,8 +213,8 @@ class _AddRoomState extends State<AddRoomPage> {
                           ToastUtil.showToastCenter(context, "分数不能为空");
                           return;
                         }
-                        _summitAnswer(course, title, this._selectText, content, anwser,
-                            "杨文老师", score);
+                        _summitAnswer(course, title, this._selectText, content,
+                            anwser, this._userName, score);
                       },
                       child: Text("提交"),
                     ))

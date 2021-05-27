@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/base/SpUtils.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/base/utils/ToastUtil.dart';
 import 'package:flutter_study/net/bean/AnswerBo.dart';
 import 'package:flutter_study/net/bean/RegisterBo.dart';
@@ -20,15 +20,14 @@ class _RoomDetailState extends State<RoomDetailPage> {
   TextEditingController answerController = TextEditingController();
   bool isShow = true;
   var userName = "";
-  var role = "";
+  var student = "";
   String replyContent = "";
 
   @override
   void initState() {
     super.initState();
-    init().then((value) => setState(() {}));
-    String student = "";
-    if (role == "学生") {
+    this.userName = SpUtil.getUserName();
+    if (!SpUtil.isTeacher()) {
       student = userName;
     }
     _getQuestionAnswer(widget.detailBo.questionId, student);
@@ -119,11 +118,6 @@ class _RoomDetailState extends State<RoomDetailPage> {
                         ))),
               ],
             )));
-  }
-
-  Future init() async {
-    userName = await SpUtils.instance.getString(SpKeys.SP_USERNAME);
-    role = await SpUtils.instance.getString(SpKeys.SP_ROLE);
   }
 
   _summitAnswer(questionId, student, anwser) async {

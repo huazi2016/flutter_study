@@ -10,6 +10,8 @@ class SplashRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ToastUtil.showToastCenter(
+    //     context, "role==" + NewSpUtil.getString(SpKeys.SP_ROLE));
     return BaseWidget<SplashViewModel>(
       model: _viewModel,
       builder: (context, model, child) => Scaffold(
@@ -22,7 +24,8 @@ class SplashRoute extends StatelessWidget {
         await model.doInit();
         //此处可以判断防止重复登录
         Navigator.of(context).pushNamedAndRemoveUntil(
-            RoutePages.login, (Route<dynamic> route) => false);
+            RoutePages.login,
+            (Route<dynamic> route) => false);
       },
     );
   }

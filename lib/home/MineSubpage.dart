@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
-import 'package:flutter_study/base/SpUtils.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:package_info/package_info.dart';
 
 class MineSubpage extends StatefulWidget {
@@ -18,7 +17,8 @@ class _MineState extends State<MineSubpage> {
   @override
   void initState() {
     super.initState();
-    init().then((value) => setState(() {}));
+    headUrl = SpUtil.getString(SpKeys.SP_HEADURL);
+    nickname = SpUtil.getUserName();
   }
 
   @override
@@ -152,9 +152,9 @@ class _MineState extends State<MineSubpage> {
                             FlatButton(
                               child: Text('确认'),
                               onPressed: () {
-                                SpUtils.instance.saveString(SpKeys.SP_HEADURL, "");
-                                SpUtils.instance.saveString(SpKeys.SP_ROLE, "");
-                                SpUtils.instance.saveString(SpKeys.SP_USERNAME, "");
+                                SpUtil.putString(SpKeys.SP_HEADURL, "");
+                                SpUtil.putString(SpKeys.SP_ROLE, "");
+                                SpUtil.putString(SpKeys.SP_USERNAME, "");
                                 Navigator.of(context).pop('ok');
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     RoutePages.login,
@@ -171,10 +171,5 @@ class _MineState extends State<MineSubpage> {
         ],
       ),
     );
-  }
-
-  Future init() async {
-    headUrl = await SpUtils.instance.getString(SpKeys.SP_HEADURL);
-    nickname = await SpUtils.instance.getString(SpKeys.SP_USERNAME);
   }
 }

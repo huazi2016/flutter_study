@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
-import 'package:flutter_study/home/room/RoomDetailPage.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/net/bean/SelfBo.dart';
-import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
 import '../base/Config.dart';
@@ -18,12 +17,15 @@ class SelfSubpage extends StatefulWidget {
 class _SelfState extends State<SelfSubpage> {
   List<SelfInfoBo> _selfList = [];
   TextEditingController wordController;
+  bool _isTeacher = false;
 
   @override
   void initState() {
     wordController = TextEditingController();
     super.initState();
+    print("111111111=_SelfState");
     _getSelfList("");
+    _isTeacher = SpUtil.isTeacher();
   }
 
   @override
@@ -71,10 +73,21 @@ class _SelfState extends State<SelfSubpage> {
       ),
       resizeToAvoidBottomInset: false,
       body: _classroomWidget(),
-      floatingActionButton: FloatingActionButton(
-        child: Text("发布"),
-        onPressed: () {},
-      ),
+      floatingActionButton: Container(
+          child: Visibility(
+            visible: _isTeacher,
+            child: FloatingActionButton(
+              child: Text("发布"),
+              onPressed: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => AddRoomPage(),
+                //     ));
+              },
+            ),
+          ),
+        )
     );
   }
 
@@ -105,24 +118,26 @@ class _SelfState extends State<SelfSubpage> {
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 14)),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SizedBox(
-                                  //width: 50,
-                                  height: 25,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // setState(() {
-                                      //   //模拟删除
-                                      //   thself.removeAt(index);
-                                      // });
-                                      _deleteSelf(
-                                          this._selfList[index].courseId,
-                                          index);
-                                    },
-                                    child: Text("删除"),
-                                  )),
-                            )
+                            Visibility(
+                                visible: _isTeacher,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: SizedBox(
+                                      //width: 50,
+                                      height: 25,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          // setState(() {
+                                          //   //模拟删除
+                                          //   thself.removeAt(index);
+                                          // });
+                                          _deleteSelf(
+                                              this._selfList[index].courseId,
+                                              index);
+                                        },
+                                        child: Text("删除"),
+                                      )),
+                                ))
                           ]),
                         ),
                         //SizedBox(height: 5),

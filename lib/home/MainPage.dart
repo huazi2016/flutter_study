@@ -23,8 +23,12 @@ class BottomTabs extends StatefulWidget {
 
 class BottomTabState extends State<BottomTabs> {
   int _currentIndex = 0;
-
   List _pageList = [RoomSubpage(), SelfSubpage(), NewsSubpage(), MineSubpage()];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

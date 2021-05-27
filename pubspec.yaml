@@ -42,6 +42,7 @@ dependencies:
   cached_network_image: ^3.0.0
   #视频支持
   video_player: ^2.1.3
+  synchronized: ^3.0.0
 
 
 dev_dependencies:

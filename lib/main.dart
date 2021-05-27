@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/state/notifer.dart';
 import 'package:provider/provider.dart';
 import 'base/NavigationService.dart';
@@ -7,6 +8,12 @@ import 'login/LoginPage.dart';
 
 void main() {
   runApp(MyApp());
+  //init shared_preferences
+  loadAsync();
+}
+
+void loadAsync() async {
+  await SpUtil.getInstance();
 }
 
 class MyApp extends StatefulWidget {
@@ -17,6 +24,13 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  bool isLogin = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
