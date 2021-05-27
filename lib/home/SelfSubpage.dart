@@ -127,10 +127,6 @@ class _SelfState extends State<SelfSubpage> {
                                       height: 25,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          // setState(() {
-                                          //   //模拟删除
-                                          //   thself.removeAt(index);
-                                          // });
                                           _deleteSelf(
                                               this._selfList[index].courseId,
                                               index);
