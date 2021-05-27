@@ -25,6 +25,7 @@ class _RoomState extends State<RoomSubpage> {
     wordController = TextEditingController();
     super.initState();
     _getQuestionList("");
+    print("111111111=_RoomState");
     _isTeacher = SpUtil.isTeacher();
   }
 

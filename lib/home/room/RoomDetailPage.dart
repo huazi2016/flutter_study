@@ -120,6 +120,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
             )));
   }
 
+  //学生-提交答案
   _summitAnswer(questionId, student, anwser) async {
     var api = "${Config.domain}/answer/add";
     var result = await Dio().post(api, data: {
@@ -140,10 +141,15 @@ class _RoomDetailState extends State<RoomDetailPage> {
     ToastUtil.showToastBottom(context, sucessStr);
   }
 
+  //学生或老师拉取答案或答案列表
   _getQuestionAnswer(questionId, student) async {
     var api = "${Config.domain}/answer/list";
-    var result = await Dio()
-        .get(api + "?questionId=" + questionId + "&student=" + student);
+    print("_getQuestionAnswer==" +
+        questionId.toString() +
+        "---student=" +
+        student);
+    var result = await Dio().get(
+        api + "?questionId=" + questionId.toString() + "&student=" + student);
     var answerBo = AnswerBo.fromJson(result.data);
     if (answerBo.code == 0) {
       setState(() {
@@ -152,11 +158,32 @@ class _RoomDetailState extends State<RoomDetailPage> {
           isShow = false;
           String answer = dataList[0].anwser;
           String reply = dataList[0].reply;
-          replyContent = answer + " " + reply;
+          //replyContent = answer + " " + reply;
+          replyContent = "更新答案";
         }
       });
     } else {
       String sucessStr = "网络异常，无法获取";
+      ToastUtil.showToastBottom(context, sucessStr);
+    }
+  }
+
+  //老师-批改
+  _updateAnswer(answerId, teacher, reply, score) async {
+    var api = "${Config.domain}/answer/list";
+    var result = await Dio().post(api, data: {
+      "answerId": answerId.toString(),
+      "teacher": teacher,
+      "reply": reply,
+      "score": score.toString()
+    });
+    var answerBo = RegisterBo.fromJson(result.data);
+    if (answerBo.code == 0) {
+      setState(() {
+        //补充批改意见
+      });
+    } else {
+      String sucessStr = "网络异常，请稍后重试";
       ToastUtil.showToastBottom(context, sucessStr);
     }
   }

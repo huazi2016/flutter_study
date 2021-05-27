@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
+import 'package:flutter_study/home/ClassSchedulePage.dart';
 import 'package:package_info/package_info.dart';
 
 class MineSubpage extends StatefulWidget {
@@ -13,12 +14,14 @@ class MineSubpage extends StatefulWidget {
 class _MineState extends State<MineSubpage> {
   var headUrl = "";
   var nickname = "";
+  bool _isTeacher = false;
 
   @override
   void initState() {
     super.initState();
     headUrl = SpUtil.getString(SpKeys.SP_HEADURL);
     nickname = SpUtil.getUserName();
+    _isTeacher = SpUtil.isTeacher();
   }
 
   @override
@@ -94,19 +97,27 @@ class _MineState extends State<MineSubpage> {
                                       },
                                     )),
                           })),
-              Card(
-                  child: ListTile(
-                leading: Icon(Icons.list),
-                title: Text(
-                  "课程表",
-                  style: TextStyle(color: Colors.black87),
-                ),
-                trailing: Icon(
-                  Icons.keyboard_arrow_right,
-                  color: Colors.black87,
-                ),
-                onTap: () {},
-              )),
+              Visibility(
+                  visible: !_isTeacher,
+                  child: Card(
+                      child: ListTile(
+                    leading: Icon(Icons.list),
+                    title: Text(
+                      "课程表",
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.black87,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClassSchedulePage(),
+                          ));
+                    },
+                  ))),
               Card(
                   child: ListTile(
                 leading: Icon(Icons.verified_user),
