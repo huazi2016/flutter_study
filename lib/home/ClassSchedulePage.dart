@@ -80,7 +80,7 @@ class _ClassSchedule extends State<ClassSchedulePage> {
         itemCount: 5,
       );
     } else {
-      return Text("暂无数据");
+      return Text("");
     }
   }
 

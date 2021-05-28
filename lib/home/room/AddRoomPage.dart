@@ -281,7 +281,7 @@ class _AddRoomState extends State<AddRoomPage> {
     var sucessStr = "发布完成";
     if (roomBo.code == 0) {
       //返回上一页, 刷新列表
-
+      Navigator.pop(context, true);
     } else {
       sucessStr = "发布失败, 请稍后重试";
     }

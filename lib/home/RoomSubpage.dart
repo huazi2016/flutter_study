@@ -80,15 +80,28 @@ class _RoomState extends State<RoomSubpage> {
             child: FloatingActionButton(
               child: Text("发布"),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddRoomPage(),
-                    ));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => AddRoomPage(),
+                //     ));
+                _navigateAddRoom(context);
               },
             ),
           ),
         ));
+  }
+
+  _navigateAddRoom(BuildContext context) async {
+    final isSuccess = await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => AddRoomPage()),
+    );
+    if (isSuccess) {
+      setState(() {
+        _getQuestionList("");
+      });
+    }
   }
 
   Widget _classroomWidget() {

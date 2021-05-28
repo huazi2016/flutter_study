@@ -72,10 +72,7 @@ class _MineState extends State<MineSubpage> {
                           style: TextStyle(fontSize: 14, color: Colors.white)),
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new UserInfoPage()));
+                      _navigateUserInfo(context);
                     },
                   )),
                 )
@@ -212,5 +209,19 @@ class _MineState extends State<MineSubpage> {
         ],
       ),
     );
+  }
+
+  //跳转新页面, 并将返回数据加载
+  _navigateUserInfo(BuildContext context) async {
+    final isChange = await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => new UserInfoPage()),
+    );
+    if (isChange) {
+      setState(() {
+        nickname = SpUtil.getNickName();
+        headUrl = SpUtil.getString(SpKeys.SP_HEADURL);
+      });
+    }
   }
 }

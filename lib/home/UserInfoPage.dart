@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/Config.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
+import 'package:flutter_study/base/utils/ToastUtil.dart';
+import 'package:flutter_study/net/bean/RegisterBo.dart';
 
 class UserInfoPage extends StatefulWidget {
   UserInfoPage({Key key}) : super(key: key);
@@ -107,10 +112,51 @@ class _UserInfoState extends State<UserInfoPage> {
                 width: 200,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    String imgIndex = headCont.text.trim();
+                    String imgUrl = "";
+                    if (imgIndex == "1") {
+                      imgUrl = img01;
+                    } else if (imgIndex == "2") {
+                      imgUrl = img02;
+                    } else if (imgIndex == "3") {
+                      imgUrl = img03;
+                    }
+                    String nickName = nameCont.text.trim();
+                    if (imgIndex.isEmpty && nickName.isEmpty) {
+                      ToastUtil.showToastCenter(context, "内容不能为空");
+                    }
+                    _changeUserInfo(imgUrl, nickName);
+                  },
                   child: Text("提交"),
                 ))
           ],
         ));
+  }
+
+  //获取课堂表信息
+  _changeUserInfo(String avatar, String nickname) async {
+    var userId = SpUtil.getUserId();
+    var api = "${Config.domain}/user/modify";
+    print("_changeUserInfo" + userId + avatar + nickname);
+    var result = await Dio().post(api,
+        data: {"userId": userId, "avatar": avatar, "nickname": nickname});
+    var classList = RegisterBo.fromJson(result.data);
+    if (classList.code == 0) {
+      setState(() {
+        var isFlag = false;
+        if (avatar.isNotEmpty) {
+          isFlag = true;
+          SpUtil.putString(SpKeys.SP_HEADURL, avatar);
+        }
+        if (nickname.isNotEmpty) {
+          isFlag = true;
+          SpUtil.putString(SpKeys.SP_NickName, nickname);
+        }
+        Navigator.pop(context, isFlag);
+      });
+    } else {
+      ToastUtil.showToastCenter(context, "修改失败, 请稍后重试");
+    }
   }
 }
