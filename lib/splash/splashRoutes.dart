@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_study/base/Global.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/mvvm/mvvm.dart';
+import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/styles/colors.dart';
 
 class SplashRoute extends StatelessWidget {
@@ -23,11 +24,16 @@ class SplashRoute extends StatelessWidget {
         //发起网络请求
         await model.doInit();
         //此处可以判断防止重复登录
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            RoutePages.login,
-            (Route<dynamic> route) => false);
+        _getLoginStatus(context);
       },
     );
+  }
+
+  _getLoginStatus(BuildContext context) async {
+    bool isLogin = SpUtil.isLogin();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        isLogin ? RoutePages.main : RoutePages.login,
+        (Route<dynamic> route) => false);
   }
 
   Widget _buildBody(SplashViewModel model) {

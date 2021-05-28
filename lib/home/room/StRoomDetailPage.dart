@@ -132,7 +132,8 @@ class _StRoomDetailState extends State<StRoomDetailPage> {
       setState(() {
         //显示答案
         isShow = false;
-        content = answer;
+        content = answerController.text.trim();
+        print("学生回答的答案==" + content + "---" + answer);
       });
     } else {
       var sucessStr = "提交失败, 请稍后重试";
