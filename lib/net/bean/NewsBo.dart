@@ -38,6 +38,7 @@ class NewsInfoBo {
   String teacher;
   String student;
   String createTime;
+  String talkId;
   String updateTime;
 
   NewsInfoBo(
@@ -48,6 +49,7 @@ class NewsInfoBo {
       this.teacher,
       this.student,
       this.createTime,
+      this.talkId,
       this.updateTime});
 
   NewsInfoBo.fromJson(Map<String, dynamic> json) {
@@ -58,6 +60,7 @@ class NewsInfoBo {
     teacher = json['teacher'];
     student = json['student'];
     createTime = json['createTime'];
+    talkId = json['talkId'];
     updateTime = json['updateTime'];
   }
 
@@ -70,6 +73,7 @@ class NewsInfoBo {
     data['teacher'] = this.teacher;
     data['student'] = this.student;
     data['createTime'] = this.createTime;
+    data['talkId'] = this.talkId;
     data['updateTime'] = this.updateTime;
     return data;
   }

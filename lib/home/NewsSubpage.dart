@@ -116,8 +116,8 @@ class _NewsState extends State<NewsSubpage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  NewsDiscussPage(detailBo: this._newsList[index]),
+                              builder: (context) => NewsDiscussPage(
+                                  detailBo: this._newsList[index]),
                             ));
                       } else {
                         Navigator.push(
@@ -219,7 +219,7 @@ class _NewsState extends State<NewsSubpage> {
 
   _getMessageList(title) async {
     var api = "${Config.domain}/message/list";
-    var result = await Dio().get(api + "?title=" + title);
+    var result = await Dio().get(api + "?title=" + title + "&talkId=" + "");
     var newsList = NewsBo.fromJson(result.data);
     if (newsList.code == 0) {
       setState(() {

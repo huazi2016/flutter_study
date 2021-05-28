@@ -27,25 +27,26 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
     super.initState();
     _userName = SpUtil.getUserName();
     _isTeacher = SpUtil.isTeacher();
+    _getDiscussList("", widget.detailBo.talkId);
+    // var newsBo01 = NewsInfoBo();
+    // newsBo01.title = _userName;
+    // newsBo01.content = "我来了, 这个好看";
+    // this._discussList.add(newsBo01);
 
-    var newsBo01 = NewsInfoBo();
-    newsBo01.title = _userName;
-    newsBo01.content = "我来了, 这个好看";
-    this._discussList.add(newsBo01);
+    // var newsBo02 = NewsInfoBo();
+    // newsBo02.title = _userName;
+    // newsBo02.content = "詹姆斯牛逼";
+    // this._discussList.add(newsBo02);
 
-    var newsBo02 = NewsInfoBo();
-    newsBo02.title = _userName;
-    newsBo02.content = "詹姆斯牛逼";
-    this._discussList.add(newsBo02);
-
-    var newsBo03 = NewsInfoBo();
-    newsBo03.title = _userName;
-    newsBo03.content = "夏侯惇打不死";
-    this._discussList.add(newsBo03);
+    // var newsBo03 = NewsInfoBo();
+    // newsBo03.title = _userName;
+    // newsBo03.content = "夏侯惇打不死";
+    // this._discussList.add(newsBo03);
   }
 
   @override
   Widget build(BuildContext context) {
+    //widget.detailBo.talkId
     return Scaffold(
         backgroundColor: Color(0xfff4f4f4),
         appBar:
@@ -120,13 +121,12 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
                           onPressed: () {
                             String discuss = discussCont.text.trim();
                             if (discuss.isNotEmpty) {
-                              // _summitAnswer(
-                              //     widget.detailBo.questionId, userName, anwser);
                               setState(() {
-                                var newsBo = NewsInfoBo();
-                                newsBo.title = _userName;
-                                newsBo.content = "发布评论369";
-                                this._discussList.add(newsBo);
+                                // var newsBo = NewsInfoBo();
+                                // newsBo.title = _userName;
+                                // newsBo.content = "发布评论369";
+                                // this._discussList.add(newsBo);
+                                _submitDiscuss(discuss, widget.detailBo.talkId);
                                 discussCont.clear();
                               });
                             } else {
@@ -148,7 +148,7 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 5, bottom: 0),
             itemBuilder: (context, index) {
-              return Text(_discussList[index].title +
+              return Text(_discussList[index].student.toString() +
                   ":  " +
                   _discussList[index].content);
             },
@@ -160,30 +160,40 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
   }
 
   //获取评论列表
-    _getDiscussList(title) async {
-      var api = "${Config.domain}/message/list";
-      var result = await Dio().get(api + "?title=" + title);
-      var newsList = NewsBo.fromJson(result.data);
-      if (newsList.code == 0) {
-        setState(() {
-          //_discussList = newsList.data;
-        });
-      } else {
-        //ToastUtil.showToastBottom(context, "获取异常, 暂无数据");
-      }
+  _getDiscussList(title, talkId) async {
+    var api = "${Config.domain}/message/list";
+    print("_getDiscussList--" + talkId);
+    var result = await Dio().get(api + "?title=" + title + "&talkId=" + talkId);
+    var newsList = NewsBo.fromJson(result.data);
+    if (newsList.code == 0) {
+      setState(() {
+        _discussList.clear();
+        _discussList = newsList.data;
+      });
+    } else {
+      //ToastUtil.showToastBottom(context, "获取异常, 暂无数据");
     }
+  }
 
-    //学生-提交评论
-    _submitDiscuss(messageId, index) async {
-      var api = "${Config.domain}/message/add";
-      var result = await Dio().get(api + "?messageId=" + messageId.toString());
-      var newsBo = RegisterBo.fromJson(result.data);
-      if (newsBo.code == 0) {
-        setState(() {
-          //this._discussList.removeAt(index);
-        });
-      } else {
-        ToastUtil.showToastBottom(context, "提交失败, 请稍后重试");
-      }
+  //学生-提交评论
+  _submitDiscuss(content, talkId) async {
+    print("_getDiscussList--" + _userName + "--" + content + "--" + talkId);
+    var api = "${Config.domain}/message/add";
+    var result = await Dio().post(api, data: {
+      "type": "互动",
+      "title": "-",
+      "teacher": "-",
+      "content": content,
+      "talkId": talkId,
+      "student": _userName
+    });
+    var newsBo = RegisterBo.fromJson(result.data);
+    if (newsBo.code == 0) {
+      setState(() {
+        _getDiscussList("", talkId);
+      });
+    } else {
+      ToastUtil.showToastBottom(context, "提交失败, 请稍后重试");
     }
+  }
 }
