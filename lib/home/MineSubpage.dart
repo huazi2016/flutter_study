@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
-import 'package:flutter_study/base/utils/ToastUtil.dart';
-import 'package:flutter_study/home/ClassSchedulePage.dart';
-import 'package:flutter_study/home/UserInfoPage.dart';
+import 'package:flutter_study/home/mine/ClassSchedulePage.dart';
+import 'package:flutter_study/home/mine/UserInfoPage.dart';
 import 'package:package_info/package_info.dart';
 
 class MineSubpage extends StatefulWidget {

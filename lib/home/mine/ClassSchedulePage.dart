@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_study/base/utils/ToastUtil.dart';
 import 'package:flutter_study/net/bean/ClassScheBo.dart';
 import 'package:dio/dio.dart';
-import '../base/Config.dart';
+import '../../base/Config.dart';
 
 class ClassSchedulePage extends StatefulWidget {
   ClassSchedulePage({Key key}) : super(key: key);

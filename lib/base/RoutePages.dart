@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_study/broswer/Broswer.dart';
-import 'package:flutter_study/home/selfStudyDetail.dart';
+import 'package:flutter_study/home/self/selfStudyDetail.dart';
 import 'package:flutter_study/login/LoginPage.dart';
 import 'package:flutter_study/splash/splashRoutes.dart';
 
