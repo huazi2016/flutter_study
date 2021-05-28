@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
+import 'package:flutter_study/home/news/AddNewsPage.dart';
+import 'package:flutter_study/home/news/NewsDetailPage.dart';
+import 'package:flutter_study/home/news/NewsDiscussPage.dart';
 import 'package:flutter_study/net/bean/NewsBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
@@ -23,7 +26,7 @@ class _NewsState extends State<NewsSubpage> {
     wordController = TextEditingController();
     super.initState();
     print("111111111=_NewsState");
-    _getQuestionList("");
+    _getMessageList("");
     _isTeacher = SpUtil.isTeacher();
   }
 
@@ -64,7 +67,7 @@ class _NewsState extends State<NewsSubpage> {
                   )),
               onTap: () {
                 setState(() {
-                  _getQuestionList(wordController.text.trim());
+                  _getMessageList(wordController.text.trim());
                 });
               },
             )
@@ -78,15 +81,23 @@ class _NewsState extends State<NewsSubpage> {
             child: FloatingActionButton(
               child: Text("发布"),
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => AddRoomPage(),
-                //     ));
+                _navigateAddRoom(context);
               },
             ),
           ),
         ));
+  }
+
+  _navigateAddRoom(BuildContext context) async {
+    final isSuccess = await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => AddNewsPage()),
+    );
+    if (isSuccess) {
+      setState(() {
+        _getMessageList("");
+      });
+    }
   }
 
   Widget _classroomWidget() {
@@ -101,11 +112,21 @@ class _NewsState extends State<NewsSubpage> {
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => RoomDetailPage(detailBo: _newsList[index]),
-                      //     ));
+                      if (_newsList[index].type == "互动") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NewsDiscussPage(detailBo: this._newsList[index]),
+                            ));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NewsDetailPage(detailBo: _newsList[index]),
+                            ));
+                      }
                     },
                     child: Column(
                       children: <Widget>[
@@ -128,7 +149,7 @@ class _NewsState extends State<NewsSubpage> {
                                       height: 25,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          _deleteQuestion(
+                                          _deleteMessage(
                                               this._newsList[index].messageId,
                                               index);
                                         },
@@ -196,7 +217,7 @@ class _NewsState extends State<NewsSubpage> {
     }
   }
 
-  _getQuestionList(title) async {
+  _getMessageList(title) async {
     var api = "${Config.domain}/message/list";
     var result = await Dio().get(api + "?title=" + title);
     var newsList = NewsBo.fromJson(result.data);
@@ -210,9 +231,9 @@ class _NewsState extends State<NewsSubpage> {
     }
   }
 
-  _deleteQuestion(questionId, index) async {
-    var api = "${Config.domain}/question/delete";
-    var result = await Dio().get(api + "?questionId=" + questionId.toString());
+  _deleteMessage(messageId, index) async {
+    var api = "${Config.domain}/message/delete";
+    var result = await Dio().get(api + "?messageId=" + messageId.toString());
     var newsBo = RegisterBo.fromJson(result.data);
     if (newsBo.code == 0) {
       setState(() {
