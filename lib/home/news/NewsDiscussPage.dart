@@ -157,8 +157,9 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
     } else {
       return Text("");
     }
+  }
 
-    //获取评论列表
+  //获取评论列表
     _getDiscussList(title) async {
       var api = "${Config.domain}/message/list";
       var result = await Dio().get(api + "?title=" + title);
@@ -185,5 +186,4 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
         ToastUtil.showToastBottom(context, "提交失败, 请稍后重试");
       }
     }
-  }
 }

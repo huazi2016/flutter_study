@@ -7,21 +7,23 @@ import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_study/base/Config.dart';
 
-class RoomDetailPage extends StatefulWidget {
+class StRoomDetailPage extends StatefulWidget {
   final RoomDetailBo detailBo;
   // RoomDetailPage({Key key}) : super(key: key);
-  RoomDetailPage({Key key, @required this.detailBo}) : super(key: key);
+  StRoomDetailPage({Key key, @required this.detailBo}) : super(key: key);
 
   @override
-  _RoomDetailState createState() => _RoomDetailState();
+  _StRoomDetailState createState() => _StRoomDetailState();
 }
 
-class _RoomDetailState extends State<RoomDetailPage> {
+class _StRoomDetailState extends State<StRoomDetailPage> {
   TextEditingController answerController = TextEditingController();
   bool isShow = true;
   var userName = "";
   var student = "";
-  String replyContent = "";
+  String answer = "";
+  String reply = "";
+  String content = "";
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
     if (!SpUtil.isTeacher()) {
       student = userName;
     }
+    print("学生名字:" + student);
     _getQuestionAnswer(widget.detailBo.questionId, student);
   }
 
@@ -91,11 +94,7 @@ class _RoomDetailState extends State<RoomDetailPage> {
                         padding: EdgeInsets.only(top: 20),
                         child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                                "你的答案：" +
-                                    (isShow
-                                        ? answerController.text.trim()
-                                        : replyContent),
+                            child: Text("你的答案：" + content,
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 16))))),
                 SizedBox(height: 30),
@@ -129,19 +128,19 @@ class _RoomDetailState extends State<RoomDetailPage> {
       "anwser": anwser
     });
     var roomBo = RegisterBo.fromJson(result.data);
-    var sucessStr = "提交完成";
     if (roomBo.code == 0) {
       setState(() {
         //显示答案
         isShow = false;
+        content = answer;
       });
     } else {
-      sucessStr = "提交失败, 请稍后重试";
+      var sucessStr = "提交失败, 请稍后重试";
+      ToastUtil.showToastBottom(context, sucessStr);
     }
-    ToastUtil.showToastBottom(context, sucessStr);
   }
 
-  //学生或老师拉取答案或答案列表
+  //获取问题答案
   _getQuestionAnswer(questionId, student) async {
     var api = "${Config.domain}/answer/list";
     print("_getQuestionAnswer==" +
@@ -156,34 +155,20 @@ class _RoomDetailState extends State<RoomDetailPage> {
         var dataList = answerBo.data;
         if (dataList.length > 0) {
           isShow = false;
-          String answer = dataList[0].anwser;
-          String reply = dataList[0].reply;
-          //replyContent = answer + " " + reply;
-          replyContent = "更新答案";
+          if (answer.isEmpty) {}
+          if (dataList[0].anwser != null && dataList[0].anwser.isNotEmpty) {
+            answer = dataList[0].anwser;
+          }
+          if (dataList[0].reply != null && dataList[0].reply.isNotEmpty) {
+            answer = dataList[0].reply;
+          }
+          if (content.isEmpty) {
+            content = answer.toString() + "   " + reply.toString();
+          }
         }
       });
     } else {
       String sucessStr = "网络异常，无法获取";
-      ToastUtil.showToastBottom(context, sucessStr);
-    }
-  }
-
-  //老师-批改
-  _updateAnswer(answerId, teacher, reply, score) async {
-    var api = "${Config.domain}/answer/list";
-    var result = await Dio().post(api, data: {
-      "answerId": answerId.toString(),
-      "teacher": teacher,
-      "reply": reply,
-      "score": score.toString()
-    });
-    var answerBo = RegisterBo.fromJson(result.data);
-    if (answerBo.code == 0) {
-      setState(() {
-        //补充批改意见
-      });
-    } else {
-      String sucessStr = "网络异常，请稍后重试";
       ToastUtil.showToastBottom(context, sucessStr);
     }
   }

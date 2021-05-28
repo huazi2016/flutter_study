@@ -154,33 +154,6 @@ class _AddRoomState extends State<AddRoomPage> {
                     autofocus: false,
                   ),
                 ),
-                Stack(children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("分数",
-                        style: TextStyle(color: Colors.black87, fontSize: 14)),
-                  )
-                ]),
-                SizedBox(height: 3),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: 36,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: scoreCont,
-                    decoration: InputDecoration(
-                        //hasFloatingPlaceholder: true,
-                        contentPadding: EdgeInsets.all(10),
-                        //prefixIcon: Icon(Icons.search),
-                        hintText: "请输入分数"),
-                    autofocus: false,
-                  ),
-                ),
                 SizedBox(height: 20),
                 SizedBox(
                     width: 200,
@@ -191,7 +164,7 @@ class _AddRoomState extends State<AddRoomPage> {
                         String title = titleCont.text.trim();
                         String content = contentCont.text.trim();
                         String anwser = answerCont.text.trim();
-                        String score = scoreCont.text.trim();
+                        //String score = scoreCont.text.trim();
                         if (course.isEmpty) {
                           ToastUtil.showToastCenter(context, "科目不能为空");
                           return;
@@ -208,12 +181,8 @@ class _AddRoomState extends State<AddRoomPage> {
                           ToastUtil.showToastCenter(context, "答案不能为空");
                           return;
                         }
-                        if (score.isEmpty) {
-                          ToastUtil.showToastCenter(context, "分数不能为空");
-                          return;
-                        }
                         _summitAnswer(course, title, this._selectText, content,
-                            anwser, this._userName, score);
+                            anwser, this._userName);
                       },
                       child: Text("提交"),
                     ))
@@ -264,7 +233,7 @@ class _AddRoomState extends State<AddRoomPage> {
   }
 
   //学生-新增题目
-  _summitAnswer(course, title, type, content, anwser, teacher, score) async {
+  _summitAnswer(course, title, type, content, anwser, teacher) async {
     var api = "${Config.domain}/question/add";
     var result = await Dio().post(api, data: {
       "course": course, //数学
@@ -274,7 +243,6 @@ class _AddRoomState extends State<AddRoomPage> {
       "content": content, //内容
       "anwser": anwser, //答案
       "teacher": teacher, //发布老师
-      "score": score, //分数
     });
     var roomBo = RegisterBo.fromJson(result.data);
     var sucessStr = "发布完成";

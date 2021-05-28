@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/home/room/AddRoomPage.dart';
-import 'package:flutter_study/home/room/RoomDetailPage.dart';
+import 'package:flutter_study/home/room/TeRoomDetailPage.dart';
+import 'package:flutter_study/home/room/StRoomDetailPage.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
@@ -80,11 +81,6 @@ class _RoomState extends State<RoomSubpage> {
             child: FloatingActionButton(
               child: Text("发布"),
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => AddRoomPage(),
-                //     ));
                 _navigateAddRoom(context);
               },
             ),
@@ -116,12 +112,21 @@ class _RoomState extends State<RoomSubpage> {
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                RoomDetailPage(detailBo: this._roomList[index]),
-                          ));
+                      if (_isTeacher) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TeRoomDetailPage(
+                                  detailBo: this._roomList[index]),
+                            ));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StRoomDetailPage(
+                                  detailBo: this._roomList[index]),
+                            ));
+                      }
                     },
                     child: Column(
                       children: <Widget>[
