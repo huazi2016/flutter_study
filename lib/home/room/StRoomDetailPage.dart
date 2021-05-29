@@ -161,7 +161,7 @@ class _StRoomDetailState extends State<StRoomDetailPage> {
             answer = dataList[0].anwser;
           }
           if (dataList[0].reply != null && dataList[0].reply.isNotEmpty) {
-            answer = dataList[0].reply;
+            reply = dataList[0].reply;
           }
           if (content.isEmpty) {
             content = answer.toString() + "   " + reply.toString();
