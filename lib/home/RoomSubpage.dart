@@ -16,6 +16,7 @@ class _RoomState extends State<RoomSubpage> {
   TextEditingController wordController;
   bool _isTeacher = false;
   String title = "";
+
   @override
   void initState() {
     wordController = TextEditingController();
@@ -68,8 +69,15 @@ class _RoomState extends State<RoomSubpage> {
           ],
         ),
         resizeToAvoidBottomInset: false,
-        body: QuestionListRoute(
-          title: this.title,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            setState(() {
+              this.title = "";
+            });
+          },
+          child: QuestionListRoute(
+            title: this.title,isPaper: false,
+          ),
         ),
         floatingActionButton: Container(
           child: Visibility(

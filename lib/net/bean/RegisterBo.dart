@@ -1,7 +1,7 @@
 class RegisterBo {
   int code;
   String msg;
-  Null data;
+  dynamic data;
   int count;
 
   RegisterBo({this.code, this.msg, this.data, this.count});

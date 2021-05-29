@@ -168,7 +168,7 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
       ),
       Expanded(
         child: QuestionListRoute(
-          title: infoBo.title,
+          title: infoBo.title, isPaper: true,
         ),
         flex: 1,
       )

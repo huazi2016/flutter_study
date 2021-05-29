@@ -11,8 +11,10 @@ import 'TeRoomDetailPage.dart';
 
 class QuestionListRoute extends StatefulWidget {
   final String title;
+  final bool isPaper;
 
-  const QuestionListRoute({Key key, this.title}) : super(key: key);
+  const QuestionListRoute({Key key, this.title, this.isPaper = false})
+      : super(key: key);
 
   @override
   _QuestionListRouteState createState() => _QuestionListRouteState();
@@ -29,7 +31,7 @@ class _QuestionListRouteState extends State<QuestionListRoute> {
       onModelReady: (model) {
         //发起网络请求
         print("发起网络请求.>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        model.demo(widget.title);
+        model.demo(widget.title,widget.isPaper);
       },
     );
   }
@@ -178,15 +180,15 @@ class QuestionListViewModel extends BaseModel {
   //region ========== 示例 ==========
   List<RoomDetailBo> roomList = [];
 
-  demo(title) async {
+  demo(title,isPaper) async {
     setState(ViewState.Loading);
     try {
       print("获取数据L 开始");
-      roomList = await _service._getQuestionList(title);
+      roomList = await _service._getQuestionList(title,isPaper);
       print("获取数据L :${roomList.length}");
-      if(roomList.length > 0) {
+      if (roomList.length > 0) {
         setState(ViewState.Success);
-      }else{
+      } else {
         setState(ViewState.Failure);
       }
     } catch (e) {
@@ -213,10 +215,10 @@ class QuestionListViewModel extends BaseModel {
 /// api
 class QuestionListService {
   //接口
-  Future<List<RoomDetailBo>> _getQuestionList(title) async {
+  Future<List<RoomDetailBo>> _getQuestionList(title,isPaper) async {
     var api = "${Config.domain}/question/search";
     var result = await Dio()
-        .post(api, data: {"course": "", "isPaper": false, "title": title});
+        .post(api, data: {"course": title, "isPaper": isPaper, "title": title});
     var roomList = RoomBo.fromJson(result.data);
     return roomList.data;
   }

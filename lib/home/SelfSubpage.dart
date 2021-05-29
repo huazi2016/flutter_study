@@ -120,22 +120,24 @@ class _SelfState extends State<SelfSubpage> {
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 14)),
                             ),
-                            Visibility(
-                                visible: _isTeacher,
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: SizedBox(
-                                      //width: 50,
-                                      height: 25,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          _deleteSelf(
-                                              this._selfList[index].courseId,
-                                              index);
-                                        },
-                                        child: Text("删除"),
-                                      )),
-                                ))
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: SizedBox(
+                                //width: 50,
+                                  height: 25,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if(_isTeacher) {
+                                        _deleteSelf(
+                                            this._selfList[index].courseId,
+                                            index);
+                                      }else{
+                                        queryScore(SpUtil.getUserName(),this._selfList[index].title,);
+                                      }
+                                    },
+                                    child: Text(_isTeacher?"删除":"查分"),
+                                  )),
+                            )
                           ]),
                         ),
                         SizedBox(height: 8),
@@ -234,6 +236,18 @@ class _SelfState extends State<SelfSubpage> {
       setState(() {
         this._selfList.removeAt(index);
       });
+    } else {
+      Toast.show("删除失败", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    }
+  }
+
+  void queryScore(String userName, String title) async{
+    var api = "${Config.domain}/answer/score";
+    var result = await Dio().get(api + "?student=$userName&course=$title" );
+    var selfBo = RegisterBo.fromJson(result.data);
+    if (selfBo.code == 0) {
+      print("成绩结果 ${selfBo.toJson()}");
     } else {
       Toast.show("删除失败", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
