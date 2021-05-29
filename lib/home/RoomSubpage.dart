@@ -16,6 +16,8 @@ class _RoomState extends State<RoomSubpage> {
   TextEditingController wordController;
   bool _isTeacher = false;
   String title = "";
+  QuestionListViewModel _viewModel =
+      QuestionListViewModel(service: QuestionListService());
 
   @override
   void initState() {
@@ -61,9 +63,8 @@ class _RoomState extends State<RoomSubpage> {
                         style: TextStyle(fontSize: 18, color: Colors.white)),
                   )),
               onTap: () {
-                setState(() {
-                  this.title = (wordController.text.trim());
-                });
+                this.title = (wordController.text.trim());
+                _viewModel.demo(title, false);
               },
             )
           ],
@@ -71,12 +72,13 @@ class _RoomState extends State<RoomSubpage> {
         resizeToAvoidBottomInset: false,
         body: RefreshIndicator(
           onRefresh: () async {
-            setState(() {
-              this.title = "";
-            });
+            this.title = "";
+            _viewModel.demo(title, false);
           },
           child: QuestionListRoute(
-            title: this.title,isPaper: false,
+            title: this.title,
+            isPaper: false,
+            viewModel: _viewModel,
           ),
         ),
         floatingActionButton: Container(
@@ -98,9 +100,8 @@ class _RoomState extends State<RoomSubpage> {
       new MaterialPageRoute(builder: (context) => AddRoomPage()),
     );
     if (isSuccess) {
-      setState(() {
-        this.title = ("");
-      });
+      this.title = ("");
+      _viewModel.demo(title, false);
     }
   }
 }

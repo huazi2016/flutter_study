@@ -13,7 +13,10 @@ class QuestionListRoute extends StatefulWidget {
   final String title;
   final bool isPaper;
 
-  const QuestionListRoute({Key key, this.title, this.isPaper = false})
+  final QuestionListViewModel viewModel;
+
+  const QuestionListRoute(
+      {Key key, this.title, this.isPaper = false, this.viewModel})
       : super(key: key);
 
   @override
@@ -21,7 +24,7 @@ class QuestionListRoute extends StatefulWidget {
 }
 
 class _QuestionListRouteState extends State<QuestionListRoute> {
-  final _viewModel = QuestionListViewModel(service: QuestionListService());
+  var _viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class _QuestionListRouteState extends State<QuestionListRoute> {
       onModelReady: (model) {
         //发起网络请求
         print("发起网络请求.>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        model.demo(widget.title,widget.isPaper);
+        model.demo(widget.title, widget.isPaper);
       },
     );
   }
@@ -41,7 +44,9 @@ class _QuestionListRouteState extends State<QuestionListRoute> {
   @override
   void initState() {
     super.initState();
-    print("初始化.>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    _viewModel = widget.viewModel ??
+        QuestionListViewModel(service: QuestionListService());
+    print("初始化.>>>>>>>>>>>>>>>${widget.title}>>>>>>>>>>>>>>>>");
     _isTeacher = SpUtil.isTeacher();
   }
 
@@ -180,11 +185,11 @@ class QuestionListViewModel extends BaseModel {
   //region ========== 示例 ==========
   List<RoomDetailBo> roomList = [];
 
-  demo(title,isPaper) async {
+  demo(title, isPaper) async {
     setState(ViewState.Loading);
     try {
-      print("获取数据L 开始");
-      roomList = await _service._getQuestionList(title,isPaper);
+      print("获取数据L 开始 $title");
+      roomList = await _service._getQuestionList(title, isPaper);
       print("获取数据L :${roomList.length}");
       if (roomList.length > 0) {
         setState(ViewState.Success);
@@ -215,15 +220,15 @@ class QuestionListViewModel extends BaseModel {
 /// api
 class QuestionListService {
   //接口
-  Future<List<RoomDetailBo>> _getQuestionList(title,isPaper) async {
+  Future<List<RoomDetailBo>> _getQuestionList(title, isPaper) async {
     var api = "${Config.domain}/question/search";
     var result;
-    if(isPaper){
-      result = await Dio().post(
-          api, data: {"course": title, "isPaper": isPaper, "title": ""});
-    }else {
-      result = await Dio().post(
-          api, data: {"course": "", "isPaper": isPaper, "title": title});
+    if (isPaper) {
+      result = await Dio()
+          .post(api, data: {"course": title, "isPaper": isPaper, "title": ""});
+    } else {
+      result = await Dio()
+          .post(api, data: {"course": "", "isPaper": isPaper, "title": title});
     }
     var roomList = RoomBo.fromJson(result.data);
     return roomList.data;
