@@ -32,49 +32,49 @@ class _SelfState extends State<SelfSubpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff4f4f4),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          margin: EdgeInsets.only(left: 15, right: 5),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1),
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(5))),
-          alignment: Alignment.center,
-          height: 36,
-          child: TextField(
-            controller: wordController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                //hasFloatingPlaceholder: true,
-                contentPadding: EdgeInsets.only(top: 0.1),
-                prefixIcon: Icon(Icons.search),
-                hintText: "输入关键字"),
-            autofocus: false,
+        backgroundColor: Color(0xfff4f4f4),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            margin: EdgeInsets.only(left: 15, right: 5),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            alignment: Alignment.center,
+            height: 36,
+            child: TextField(
+              controller: wordController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  //hasFloatingPlaceholder: true,
+                  contentPadding: EdgeInsets.only(top: 0.1),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "输入关键字"),
+              autofocus: false,
+            ),
           ),
+          actions: <Widget>[
+            InkWell(
+              child: Container(
+                  margin: EdgeInsets.only(right: 15),
+                  width: 50,
+                  height: 50,
+                  child: Center(
+                    child: Text("搜索",
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
+                  )),
+              onTap: () {
+                setState(() {
+                  _getSelfList(wordController.text.trim());
+                });
+              },
+            )
+          ],
         ),
-        actions: <Widget>[
-          InkWell(
-            child: Container(
-                margin: EdgeInsets.only(right: 15),
-                width: 50,
-                height: 50,
-                child: Center(
-                  child: Text("搜索",
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
-                )),
-            onTap: () {
-              setState(() {
-                _getSelfList(wordController.text.trim());
-              });
-            },
-          )
-        ],
-      ),
-      resizeToAvoidBottomInset: false,
-      body: _classroomWidget(),
-      floatingActionButton: Container(
+        resizeToAvoidBottomInset: false,
+        body: _classroomWidget(),
+        floatingActionButton: Container(
           child: Visibility(
             visible: _isTeacher,
             child: FloatingActionButton(
@@ -84,9 +84,9 @@ class _SelfState extends State<SelfSubpage> {
               },
             ),
           ),
-        )
-    );
+        ));
   }
+
   List<RoomDetailBo> _roomList = [];
 
   Widget _classroomWidget() {
@@ -123,19 +123,22 @@ class _SelfState extends State<SelfSubpage> {
                             Align(
                               alignment: Alignment.topRight,
                               child: SizedBox(
-                                //width: 50,
+                                  //width: 50,
                                   height: 25,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      if(_isTeacher) {
+                                      if (_isTeacher) {
                                         _deleteSelf(
                                             this._selfList[index].courseId,
                                             index);
-                                      }else{
-                                        queryScore(SpUtil.getUserName(),this._selfList[index].title,);
+                                      } else {
+                                        queryScore(
+                                          SpUtil.getUserName(),
+                                          this._selfList[index].title,
+                                        );
                                       }
                                     },
-                                    child: Text(_isTeacher?"删除":"查分"),
+                                    child: Text(_isTeacher ? "删除" : "查分"),
                                   )),
                             )
                           ]),
@@ -228,9 +231,9 @@ class _SelfState extends State<SelfSubpage> {
     }
   }
 
-  _deleteSelf(questionId, index) async {
-    var api = "${Config.domain}/question/delete";
-    var result = await Dio().get(api + "?questionId=" + questionId.toString());
+  _deleteSelf(courseId, index) async {
+    var api = "${Config.domain}/course/delete";
+    var result = await Dio().get(api + "?courseId=" + courseId.toString());
     var selfBo = RegisterBo.fromJson(result.data);
     if (selfBo.code == 0) {
       setState(() {
@@ -242,12 +245,30 @@ class _SelfState extends State<SelfSubpage> {
     }
   }
 
-  void queryScore(String userName, String title) async{
+  void queryScore(String userName, String title) async {
     var api = "${Config.domain}/answer/score";
-    var result = await Dio().get(api + "?student=$userName&course=$title" );
+    var result = await Dio().get(api + "?student=$userName&course=$title");
     var selfBo = RegisterBo.fromJson(result.data);
     if (selfBo.code == 0) {
       print("成绩结果 ${selfBo.toJson()}");
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('当前试卷分数'),
+            content: Text(
+                '''${SpUtil.getUserName()},您当前已经获得: ${selfBo.data} 分!'''),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('ok'),
+                onPressed: () {
+                  Navigator.of(context).pop('cancel');
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       Toast.show("删除失败", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);

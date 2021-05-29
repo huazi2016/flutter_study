@@ -18,6 +18,7 @@ class _AddRoomState extends State<AddRoomPage> {
   TextEditingController contentCont = TextEditingController();
   TextEditingController answerCont = TextEditingController();
   TextEditingController scoreCont = TextEditingController();
+
   //选中默认值
   int groupValue = 0;
   int groupExamValue = 0;

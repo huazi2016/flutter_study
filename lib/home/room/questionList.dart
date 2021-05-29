@@ -217,8 +217,14 @@ class QuestionListService {
   //接口
   Future<List<RoomDetailBo>> _getQuestionList(title,isPaper) async {
     var api = "${Config.domain}/question/search";
-    var result = await Dio()
-        .post(api, data: {"course": title, "isPaper": isPaper, "title": title});
+    var result;
+    if(isPaper){
+      result = await Dio().post(
+          api, data: {"course": title, "isPaper": isPaper, "title": ""});
+    }else {
+      result = await Dio().post(
+          api, data: {"course": "", "isPaper": isPaper, "title": title});
+    }
     var roomList = RoomBo.fromJson(result.data);
     return roomList.data;
   }
