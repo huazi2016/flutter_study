@@ -11,8 +11,6 @@ class SplashRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ToastUtil.showToastCenter(
-    //     context, "role==" + NewSpUtil.getString(SpKeys.SP_ROLE));
     return BaseWidget<SplashViewModel>(
       model: _viewModel,
       builder: (context, model, child) => Scaffold(
@@ -38,14 +36,13 @@ class SplashRoute extends StatelessWidget {
 
   Widget _buildBody(SplashViewModel model) {
     return Container(
-      color: MainColors.mainColor,
-      child: Center(
-        child: Icon(
-          Icons.wifi_outlined,
-          size: 70,
-        ),
-      ),
-    );
+        //color: MainColors.mainColor,
+        child: Center(child: Image.asset(
+      getImgPath("splash_bg"),
+      //width: double.infinity,
+      //height: double.infinity,
+      fit: BoxFit.fill,
+    )));
   }
 }
 
@@ -58,4 +55,8 @@ class SplashViewModel extends BaseModel {
   }
 //endregion
 
+}
+
+String getImgPath(String name, {String format: 'png'}) {
+  return 'assets/$name.$format';
 }

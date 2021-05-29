@@ -158,7 +158,7 @@ class _RoomState extends State<RoomSubpage> {
                                 ))
                           ]),
                         ),
-                        //SizedBox(height: 5),
+                        SizedBox(height: 8),
                         Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
                           child: Stack(children: <Widget>[
@@ -173,7 +173,7 @@ class _RoomState extends State<RoomSubpage> {
                             ),
                           ]),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 3),
                         Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
                           child: Stack(children: <Widget>[

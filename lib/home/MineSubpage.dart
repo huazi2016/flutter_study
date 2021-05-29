@@ -34,48 +34,31 @@ class _MineState extends State<MineSubpage> {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(color: Colors.blueAccent),
-              child: Stack(children: <Widget>[
-                Positioned(
-                    top: 60,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 30, right: 20),
-                          width: 68,
-                          height: 68,
+              child: Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(left: 30, right: 20),
+                      width: 68,
+                      height: 68,
+                      child: InkWell(
                           child: CircleAvatar(
                             radius: 36,
                             //child: CachedNetworkImage(imageUrl: headUrl),
                             backgroundImage: NetworkImage(headUrl),
                           ),
-                        ),
-                        Text(
-                          nickname,
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ],
-                    )),
-                Positioned(
-                  top: 150,
-                  left: 290,
-                  child: Container(
-                      //借助GestureDetector设置Text点击事件
-                      child: GestureDetector(
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.shade400,
-                        borderRadius: BorderRadius.circular(5),
+                          onTap: () {
+                            _navigateUserInfo(context);
+                          })),
+                  InkWell(
+                      child: Text(
+                        nickname,
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
-                      child: Text("去编辑",
-                          style: TextStyle(fontSize: 14, color: Colors.white)),
-                    ),
-                    onTap: () {
-                      _navigateUserInfo(context);
-                    },
-                  )),
-                )
-              ])),
+                      onTap: () {
+                        _navigateUserInfo(context);
+                      }),
+                ],
+              )),
           ListView(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.all(10.0),
