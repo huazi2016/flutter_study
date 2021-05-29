@@ -257,7 +257,7 @@ class _SelfState extends State<SelfSubpage> {
           return AlertDialog(
             title: Text('当前试卷分数'),
             content: Text(
-                '''${SpUtil.getUserName()},您当前已经获得: ${selfBo.data} 分!'''),
+                '''${SpUtil.getUserName()},您当前已经获得: ${selfBo.data??0} 分!'''),
             actions: <Widget>[
               FlatButton(
                 child: Text('ok'),
