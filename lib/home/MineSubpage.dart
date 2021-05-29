@@ -57,6 +57,16 @@ class _MineState extends State<MineSubpage> {
                       onTap: () {
                         _navigateUserInfo(context);
                       }),
+                  Spacer(flex: 1,),
+                  Padding(
+                    padding: EdgeInsets.only(right: 18),
+                    //借助GestureDetector设置Text点击事件
+                      child: GestureDetector(
+                        child: Icon(Icons.arrow_forward_ios_sharp,color: Colors.white,),
+                        onTap: () {
+                          _navigateUserInfo(context);
+                        },
+                      ))
                 ],
               )),
           ListView(

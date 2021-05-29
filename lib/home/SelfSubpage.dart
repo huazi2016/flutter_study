@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/RoutePages.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
+import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:flutter_study/net/bean/SelfBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
@@ -79,21 +80,22 @@ class _SelfState extends State<SelfSubpage> {
             child: FloatingActionButton(
               child: Text("发布"),
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => AddRoomPage(),
-                //     ));
+                Navigator.pushNamed(context, RoutePages.addSelf);
               },
             ),
           ),
         )
     );
   }
+  List<RoomDetailBo> _roomList = [];
 
   Widget _classroomWidget() {
     if (this._selfList.length > 0) {
-      return Container(
+      return RefreshIndicator(
+        onRefresh: () async {
+          await _getSelfList("");
+          setState(() {});
+        },
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 5, bottom: 15),

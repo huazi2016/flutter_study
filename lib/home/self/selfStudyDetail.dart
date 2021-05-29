@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_study/base/Config.dart';
+import 'package:flutter_study/home/room/questionList.dart';
+import 'package:flutter_study/net/bean/RoomBo.dart';
 import 'package:flutter_study/net/bean/SelfBo.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';
 
 class SelfDetailRoute extends StatefulWidget {
@@ -26,10 +30,18 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
   void initState() {
     super.initState();
     infoBo = widget.infoBo;
+    if (infoBo.type != "微课") {
+      downFunction();
+    } else {
+      videoInit();
+    }
+    // 获取试卷
+  }
+
+  void videoInit() {
     if (infoBo.video != null && infoBo.video.isNotEmpty) {
-      _controller = VideoPlayerController.network(
-        infoBo.video,
-      )..initialize().then((_) {
+      _controller = VideoPlayerController.network(infoBo.video)
+        ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           _controller.play();
           setState(() {
@@ -37,7 +49,6 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
           });
         });
     }
-    downFunction();
   }
 
   void downFunction() async {
@@ -45,7 +56,7 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
       if (infoBo.file != null && infoBo.file.isNotEmpty) {
         /// 申请写文件权限
         String dir = (await getApplicationDocumentsDirectory()).path;
-        File file = File('$dir/temp.pdf');
+        File file = File('$dir/${DateTime.now().millisecondsSinceEpoch}.pdf');
         if (file.existsSync()) {
           file.deleteSync();
         }
@@ -104,9 +115,15 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
 
   Widget webView(SelfInfoBo infoBo) {
     return Column(children: [
-      if (infoBo.video != null && infoBo.video.isNotEmpty) ...{
+      if (_controller != null) ...{
+        Container(
+          child: Text('视频', style: TextStyle(color: Colors.white)),
+          color: Colors.teal,
+          width: double.infinity,
+          padding: EdgeInsets.all(3),
+        ),
         AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
+          aspectRatio: _controller?.value?.aspectRatio,
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
@@ -118,13 +135,43 @@ class _SelfDetailRouteState extends State<SelfDetailRoute> {
         )
       },
       if (pdfController != null) ...{
+        Container(
+          child: Text(
+            '${infoBo.type}',
+            style: TextStyle(color: Colors.white),
+          ),
+          color: Colors.teal,
+          width: double.infinity,
+          padding: EdgeInsets.all(3),
+        ),
         Expanded(
           flex: 1,
           child: PdfView(
+            scrollDirection: Axis.vertical,
             controller: pdfController,
+            onDocumentLoaded: (document) {
+              setState(() {
+                loading = false;
+              });
+            },
           ),
         )
-      }
+      },
+      Container(
+        child: Text(
+          '题目',
+          style: TextStyle(color: Colors.white),
+        ),
+        color: Colors.teal,
+        width: double.infinity,
+        padding: EdgeInsets.all(3),
+      ),
+      Expanded(
+        child: QuestionListRoute(
+          title: infoBo.title,
+        ),
+        flex: 1,
+      )
     ]);
   }
 }

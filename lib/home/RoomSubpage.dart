@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/home/room/AddRoomPage.dart';
-import 'package:flutter_study/home/room/TeRoomDetailPage.dart';
-import 'package:flutter_study/home/room/StRoomDetailPage.dart';
+import 'package:flutter_study/home/room/questionList.dart';
 import 'package:flutter_study/net/bean/RoomBo.dart';
-import 'package:toast/toast.dart';
-import 'package:dio/dio.dart';
-import '../base/Config.dart';
-import '../net/bean/RegisterBo.dart';
 
 class RoomSubpage extends StatefulWidget {
   RoomSubpage({Key key}) : super(key: key);
@@ -20,12 +15,11 @@ class _RoomState extends State<RoomSubpage> {
   List<RoomDetailBo> _roomList = [];
   TextEditingController wordController;
   bool _isTeacher = false;
-
+  String title = "";
   @override
   void initState() {
     wordController = TextEditingController();
     super.initState();
-    _getQuestionList("");
     print("111111111=_RoomState");
     _isTeacher = SpUtil.isTeacher();
   }
@@ -67,14 +61,16 @@ class _RoomState extends State<RoomSubpage> {
                   )),
               onTap: () {
                 setState(() {
-                  _getQuestionList(wordController.text.trim());
+                  this.title = (wordController.text.trim());
                 });
               },
             )
           ],
         ),
         resizeToAvoidBottomInset: false,
-        body: _classroomWidget(),
+        body: QuestionListRoute(
+          title: this.title,
+        ),
         floatingActionButton: Container(
           child: Visibility(
             visible: _isTeacher,
@@ -95,154 +91,8 @@ class _RoomState extends State<RoomSubpage> {
     );
     if (isSuccess) {
       setState(() {
-        _getQuestionList("");
+        this.title = ("");
       });
-    }
-  }
-
-  Widget _classroomWidget() {
-    if (this._roomList.length > 0) {
-      return Container(
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            padding: EdgeInsets.only(top: 5, bottom: 15),
-            itemBuilder: (context, index) {
-              return Card(
-                  margin:
-                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                  child: InkWell(
-                    onTap: () {
-                      if (_isTeacher) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TeRoomDetailPage(
-                                  detailBo: this._roomList[index]),
-                            ));
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StRoomDetailPage(
-                                  detailBo: this._roomList[index]),
-                            ));
-                      }
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 15, right: 15),
-                          child: Stack(children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("题型：" + this._roomList[index].type,
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 14)),
-                            ),
-                            Visibility(
-                                visible: _isTeacher,
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: SizedBox(
-                                      //width: 50,
-                                      height: 25,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          _deleteQuestion(
-                                              this._roomList[index].questionId,
-                                              index);
-                                        },
-                                        child: Text("删除"),
-                                      )),
-                                ))
-                          ]),
-                        ),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: Stack(children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(this._roomList[index].title,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      //fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                            ),
-                          ]),
-                        ),
-                        SizedBox(height: 3),
-                        Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: Stack(children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(this._roomList[index].content,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      //fontWeight: FontWeight.bold,
-                                      fontSize: 15)),
-                            ),
-                          ]),
-                        ),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                          child: Stack(children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(this._roomList[index].teacher,
-                                  style: TextStyle(
-                                      color: Colors.black38, fontSize: 12)),
-                            ),
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: Text(this._roomList[index].createTime,
-                                    style: TextStyle(
-                                        color: Colors.black38, fontSize: 12)))
-                          ]),
-                        ),
-                      ],
-                    ),
-                  ));
-            },
-            itemCount: _roomList.length),
-      );
-    } else {
-      return Text("");
-    }
-  }
-
-  _getQuestionList(title) async {
-    var api = "${Config.domain}/question/search";
-    var result = await Dio()
-        .post(api, data: {"course": "", "isPaper": false, "title": title});
-    var roomList = RoomBo.fromJson(result.data);
-    if (roomList.code == 0) {
-      setState(() {
-        _roomList = roomList.data;
-      });
-    } else {
-      Toast.show("获取异常, 暂无数据", context,
-          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-    }
-  }
-
-  _deleteQuestion(questionId, index) async {
-    var api = "${Config.domain}/question/delete";
-    var result = await Dio().get(api + "?questionId=" + questionId.toString());
-    var roomBo = RegisterBo.fromJson(result.data);
-    if (roomBo.code == 0) {
-      setState(() {
-        this._roomList.removeAt(index);
-      });
-    } else {
-      Toast.show("删除失败", context,
-          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
     }
   }
 }
