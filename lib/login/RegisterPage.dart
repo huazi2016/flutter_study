@@ -30,69 +30,64 @@ class RegisterState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("注册"),
-        centerTitle: true,
-        // actions: <Widget>[
-        //   IconButton(
-        //       icon: Icon(Icons.arrow_back),
-        //       onPressed: () {
-        //         Navigator.canPop(context);
-        //       })
-        // ],
-      ),
-      body: Container(
-        margin: EdgeInsets.only(left: 30, right: 30, top: 130),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              keyboardType: TextInputType.text,
-              maxLines: 1,
-              controller: phoneController,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  icon: Icon(Icons.account_balance),
-                  labelText: "请输入账号"),
-              autofocus: true,
-            ),
-            SizedBox(height: 12),
-            TextField(
-              maxLines: 1,
-              controller: passController,
-              obscureText: true,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  icon: Icon(Icons.lock),
-                  labelText: "请输入密码"),
-              autofocus: false,
-            ),
-            TextField(
-              maxLines: 1,
-              controller: pass2Controller,
-              obscureText: true,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  icon: Icon(Icons.lock),
-                  labelText: "再次输入密码"),
-              autofocus: false,
-            ),
-            SizedBox(height: 12),
-            _RadioWidget(),
-            SizedBox(height: 22),
-            SizedBox(
-              width: 200,
-              height: 45,
-              child: ElevatedButton(
-                onPressed: _registerClick,
-                child: Text("注册"),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text("注册"),
+          centerTitle: true,
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            margin: EdgeInsets.only(left: 30, right: 30, top: 90),
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      icon: Icon(Icons.account_balance),
+                      labelText: "请输入账号"),
+                  autofocus: true,
+                ),
+                SizedBox(height: 12),
+                TextField(
+                  maxLines: 1,
+                  controller: passController,
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      icon: Icon(Icons.lock),
+                      labelText: "请输入密码"),
+                  autofocus: false,
+                ),
+                TextField(
+                  maxLines: 1,
+                  controller: pass2Controller,
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      icon: Icon(Icons.lock),
+                      labelText: "再次输入密码"),
+                  autofocus: false,
+                ),
+                SizedBox(height: 12),
+                _RadioWidget(),
+                SizedBox(height: 22),
+                SizedBox(
+                  width: 200,
+                  height: 45,
+                  child: ElevatedButton(
+                    onPressed: _registerClick,
+                    child: Text("注册"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Row _RadioWidget() {

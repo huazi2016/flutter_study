@@ -39,157 +39,164 @@ class _AddRoomState extends State<AddRoomPage> {
         appBar: AppBar(title: Text("发布题目"), centerTitle: true),
         body: Container(
             padding: EdgeInsets.all(15),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("发布人：杨文老师",
-                      style: TextStyle(color: Colors.black54, fontSize: 12)),
-                ),
-                SizedBox(height: 20),
-                _ExamRadioWidget(),
-                Stack(children: <Widget>[
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("科目(譬如:语文/数学等)",
-                        style: TextStyle(color: Colors.black87, fontSize: 14)),
-                  )
-                ]),
-                SizedBox(height: 3),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: 36,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: courseCont,
-                    decoration: InputDecoration(
-                        //hasFloatingPlaceholder: true,
-                        contentPadding: EdgeInsets.all(10),
-                        //prefixIcon: Icon(Icons.search),
-                        hintText: "请输入科目"),
-                    autofocus: false,
+                    child: Text("发布人：杨文老师",
+                        style: TextStyle(color: Colors.black54, fontSize: 12)),
                   ),
-                ),
-                _QuestionRadioWidget(),
-                Stack(children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("标题",
-                        style: TextStyle(color: Colors.black87, fontSize: 14)),
-                  )
-                ]),
-                SizedBox(height: 3),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: 36,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: titleCont,
-                    decoration: InputDecoration(
-                        //hasFloatingPlaceholder: true,
-                        contentPadding: EdgeInsets.all(10),
-                        //prefixIcon: Icon(Icons.search),
-                        hintText: "请输入标题"),
-                    autofocus: false,
+                  SizedBox(height: 20),
+                  _ExamRadioWidget(),
+                  Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("科目(譬如:语文/数学等)",
+                          style:
+                              TextStyle(color: Colors.black87, fontSize: 14)),
+                    )
+                  ]),
+                  SizedBox(height: 3),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    alignment: Alignment.center,
+                    height: 36,
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      controller: courseCont,
+                      decoration: InputDecoration(
+                          //hasFloatingPlaceholder: true,
+                          contentPadding: EdgeInsets.all(10),
+                          //prefixIcon: Icon(Icons.search),
+                          hintText: "请输入科目"),
+                      autofocus: false,
+                    ),
                   ),
-                ),
-                Stack(children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("内容",
-                        style: TextStyle(color: Colors.black87, fontSize: 14)),
-                  )
-                ]),
-                SizedBox(height: 3),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: 36,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: contentCont,
-                    decoration: InputDecoration(
-                        //hasFloatingPlaceholder: true,
-                        contentPadding: EdgeInsets.all(10),
-                        //prefixIcon: Icon(Icons.search),
-                        hintText: "请输入内容"),
-                    autofocus: false,
+                  _QuestionRadioWidget(),
+                  Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("标题",
+                          style:
+                              TextStyle(color: Colors.black87, fontSize: 14)),
+                    )
+                  ]),
+                  SizedBox(height: 3),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    alignment: Alignment.center,
+                    height: 36,
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      controller: titleCont,
+                      decoration: InputDecoration(
+                          //hasFloatingPlaceholder: true,
+                          contentPadding: EdgeInsets.all(10),
+                          //prefixIcon: Icon(Icons.search),
+                          hintText: "请输入标题"),
+                      autofocus: false,
+                    ),
                   ),
-                ),
-                Stack(children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("答案",
-                        style: TextStyle(color: Colors.black87, fontSize: 14)),
-                  )
-                ]),
-                SizedBox(height: 3),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  alignment: Alignment.center,
-                  height: 36,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: answerCont,
-                    decoration: InputDecoration(
-                        //hasFloatingPlaceholder: true,
-                        contentPadding: EdgeInsets.all(10),
-                        //prefixIcon: Icon(Icons.search),
-                        hintText: "请输入答案"),
-                    autofocus: false,
+                  Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("内容",
+                          style:
+                              TextStyle(color: Colors.black87, fontSize: 14)),
+                    )
+                  ]),
+                  SizedBox(height: 3),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    alignment: Alignment.center,
+                    height: 36,
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      controller: contentCont,
+                      decoration: InputDecoration(
+                          //hasFloatingPlaceholder: true,
+                          contentPadding: EdgeInsets.all(10),
+                          //prefixIcon: Icon(Icons.search),
+                          hintText: "请输入内容"),
+                      autofocus: false,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                    width: 200,
-                    height: 45,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        String course = courseCont.text.trim();
-                        String title = titleCont.text.trim();
-                        String content = contentCont.text.trim();
-                        String anwser = answerCont.text.trim();
-                        //String score = scoreCont.text.trim();
-                        if (course.isEmpty) {
-                          ToastUtil.showToastCenter(context, "科目不能为空");
-                          return;
-                        }
-                        if (title.isEmpty) {
-                          ToastUtil.showToastCenter(context, "标题不能为空");
-                          return;
-                        }
-                        if (content.isEmpty) {
-                          ToastUtil.showToastCenter(context, "内容不能为空");
-                          return;
-                        }
-                        if (anwser.isEmpty) {
-                          ToastUtil.showToastCenter(context, "答案不能为空");
-                          return;
-                        }
-                        _summitQuestion(course, title, this._selectText,
-                            content, anwser, this._userName);
-                      },
-                      child: Text("提交"),
-                    ))
-              ],
+                  Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("答案",
+                          style:
+                              TextStyle(color: Colors.black87, fontSize: 14)),
+                    )
+                  ]),
+                  SizedBox(height: 3),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    alignment: Alignment.center,
+                    height: 36,
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      controller: answerCont,
+                      decoration: InputDecoration(
+                          //hasFloatingPlaceholder: true,
+                          contentPadding: EdgeInsets.all(10),
+                          //prefixIcon: Icon(Icons.search),
+                          hintText: "请输入答案"),
+                      autofocus: false,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                      width: 200,
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          String course = courseCont.text.trim();
+                          String title = titleCont.text.trim();
+                          String content = contentCont.text.trim();
+                          String anwser = answerCont.text.trim();
+                          //String score = scoreCont.text.trim();
+                          if (course.isEmpty) {
+                            ToastUtil.showToastCenter(context, "科目不能为空");
+                            return;
+                          }
+                          if (title.isEmpty) {
+                            ToastUtil.showToastCenter(context, "标题不能为空");
+                            return;
+                          }
+                          if (content.isEmpty) {
+                            ToastUtil.showToastCenter(context, "内容不能为空");
+                            return;
+                          }
+                          if (anwser.isEmpty) {
+                            ToastUtil.showToastCenter(context, "答案不能为空");
+                            return;
+                          }
+                          _summitQuestion(course, title, this._selectText,
+                              content, anwser, this._userName);
+                        },
+                        child: Text("提交"),
+                      ))
+                ],
+              ),
             )));
   }
 
