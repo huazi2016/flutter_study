@@ -130,7 +130,7 @@ class _AddSelfRoutesState extends State<AddSelfRoutes> {
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("链接",
+                    child: Text("链接(文档仅支持Pdf,视频建议使用mp4)",
                         style: TextStyle(color: Colors.black87, fontSize: 14)),
                   )
                 ]),
