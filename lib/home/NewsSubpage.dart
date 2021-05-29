@@ -102,8 +102,13 @@ class _NewsState extends State<NewsSubpage> {
 
   Widget _classroomWidget() {
     if (this._newsList.length > 0) {
-      return Container(
-        child: ListView.builder(
+      return RefreshIndicator(
+          onRefresh: () async {
+            await  _getMessageList("");
+            setState(() {
+            });
+          },
+          child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 5, bottom: 15),
             itemBuilder: (context, index) {
