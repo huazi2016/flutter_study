@@ -20,8 +20,10 @@ class _AddRoomState extends State<AddRoomPage> {
   TextEditingController scoreCont = TextEditingController();
   //选中默认值
   int groupValue = 0;
+  int groupExamValue = 0;
   String _selectText = "单选题";
   bool isShow = true;
+  bool isPaper = false;
   String _userName = "";
 
   @override
@@ -45,6 +47,7 @@ class _AddRoomState extends State<AddRoomPage> {
                       style: TextStyle(color: Colors.black54, fontSize: 12)),
                 ),
                 SizedBox(height: 20),
+                _ExamRadioWidget(),
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
@@ -72,7 +75,7 @@ class _AddRoomState extends State<AddRoomPage> {
                     autofocus: false,
                   ),
                 ),
-                _RadioWidget(),
+                _QuestionRadioWidget(),
                 Stack(children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
@@ -181,8 +184,8 @@ class _AddRoomState extends State<AddRoomPage> {
                           ToastUtil.showToastCenter(context, "答案不能为空");
                           return;
                         }
-                        _summitAnswer(course, title, this._selectText, content,
-                            anwser, this._userName);
+                        _summitQuestion(course, title, this._selectText,
+                            content, anwser, this._userName);
                       },
                       child: Text("提交"),
                     ))
@@ -190,9 +193,39 @@ class _AddRoomState extends State<AddRoomPage> {
             )));
   }
 
-  Row _RadioWidget() {
+  Row _ExamRadioWidget() {
     return Row(children: [
-      Text("类型："),
+      Text("类别："),
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Radio(
+            value: 0,
+            groupValue: groupExamValue,
+            onChanged: (v) {
+              setState(() {
+                this.groupExamValue = v;
+                this.isPaper = false;
+              });
+            }),
+        Text("课堂作业")
+      ]),
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Radio(
+            value: 1,
+            groupValue: groupExamValue,
+            onChanged: (v) {
+              setState(() {
+                this.groupExamValue = v;
+                this.isPaper = true;
+              });
+            }),
+        Text("试卷题目")
+      ]),
+    ]);
+  }
+
+  Row _QuestionRadioWidget() {
+    return Row(children: [
+      Text("题型："),
       Row(mainAxisSize: MainAxisSize.min, children: [
         Radio(
             value: 0,
@@ -233,11 +266,12 @@ class _AddRoomState extends State<AddRoomPage> {
   }
 
   //学生-新增题目
-  _summitAnswer(course, title, type, content, anwser, teacher) async {
+  _summitQuestion(course, title, type, content, anwser, teacher) async {
     var api = "${Config.domain}/question/add";
+    print("_summitQuestion--" + isPaper.toString() + "--" + type.toString());
     var result = await Dio().post(api, data: {
       "course": course, //数学
-      "isPaper": false, //true:试卷  false:课堂作业
+      "isPaper": isPaper, //true:试卷  false:课堂作业
       "title": title, //标题
       "type": type, //选择题...
       "content": content, //内容
