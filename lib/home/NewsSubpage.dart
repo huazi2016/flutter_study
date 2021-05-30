@@ -3,6 +3,7 @@ import 'package:flutter_study/base/utils/SpUtil.dart';
 import 'package:flutter_study/home/news/AddNewsPage.dart';
 import 'package:flutter_study/home/news/NewsDetailPage.dart';
 import 'package:flutter_study/home/news/NewsDiscussPage.dart';
+import 'package:flutter_study/home/news/NewsSignPage.dart';
 import 'package:flutter_study/net/bean/NewsBo.dart';
 import 'package:toast/toast.dart';
 import 'package:dio/dio.dart';
@@ -103,12 +104,11 @@ class _NewsState extends State<NewsSubpage> {
   Widget _classroomWidget() {
     if (this._newsList.length > 0) {
       return RefreshIndicator(
-          onRefresh: () async {
-            await  _getMessageList("");
-            setState(() {
-            });
-          },
-          child: ListView.builder(
+        onRefresh: () async {
+          await _getMessageList("");
+          setState(() {});
+        },
+        child: ListView.builder(
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 5, bottom: 15),
             itemBuilder: (context, index) {
@@ -123,6 +123,13 @@ class _NewsState extends State<NewsSubpage> {
                             MaterialPageRoute(
                               builder: (context) => NewsDiscussPage(
                                   detailBo: this._newsList[index]),
+                            ));
+                      } else if (_newsList[index].type == "签到") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NewsSignPage(detailBo: _newsList[index]),
                             ));
                       } else {
                         Navigator.push(

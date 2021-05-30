@@ -146,10 +146,10 @@ class _AddNewsState extends State<AddNewsPage> {
             onChanged: (v) {
               setState(() {
                 this.groupValue = v;
-                this._selectText = "互动";
+                this._selectText = "签到";
               });
             }),
-        Text("互动")
+        Text("签到")
       ]),
       Row(mainAxisSize: MainAxisSize.min, children: [
         Radio(
@@ -158,7 +158,19 @@ class _AddNewsState extends State<AddNewsPage> {
             onChanged: (v) {
               setState(() {
                 this.groupValue = v;
-                this._selectText = "通知";
+                this._selectText = "互动";
+              });
+            }),
+        Text("互动")
+      ]),
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Radio(
+            value: 3,
+            groupValue: groupValue,
+            onChanged: (v) {
+              setState(() {
+                this.groupValue = v;
+                this._selectText = "签到";
               });
             }),
         Text("通知")

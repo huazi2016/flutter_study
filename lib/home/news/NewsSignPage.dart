@@ -6,19 +6,18 @@ import 'package:flutter_study/net/bean/NewsBo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_study/net/bean/RegisterBo.dart';
 
-class NewsDiscussPage extends StatefulWidget {
+class NewsSignPage extends StatefulWidget {
   final NewsInfoBo detailBo;
 
-  NewsDiscussPage({Key key, @required this.detailBo}) : super(key: key);
+  NewsSignPage({Key key, @required this.detailBo}) : super(key: key);
 
   @override
-  _NewsDiscussState createState() => _NewsDiscussState();
+  _NewsSignState createState() => _NewsSignState();
 }
 
-class _NewsDiscussState extends State<NewsDiscussPage> {
+class _NewsSignState extends State<NewsSignPage> {
   List<NewsInfoBo> _discussList = [];
   bool isShow = true;
-  TextEditingController discussCont = TextEditingController();
   String _userName;
   bool _isTeacher = false;
 
@@ -71,32 +70,10 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
                 SizedBox(height: 18),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("全部评论",
+                  child: Text("全部签到",
                       style: TextStyle(color: Colors.black54, fontSize: 15)),
                 ),
                 Expanded(child: _discussWidget()),
-                Visibility(
-                  visible: !_isTeacher,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 20, bottom: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    alignment: Alignment.center,
-                    height: 36,
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: discussCont,
-                      decoration: InputDecoration(
-                          //hasFloatingPlaceholder: true,
-                          contentPadding: EdgeInsets.all(10),
-                          //prefixIcon: Icon(Icons.search),
-                          hintText: "请输入评论"),
-                      autofocus: false,
-                    ),
-                  ),
-                ),
                 //SizedBox(height: 30),
                 Visibility(
                     visible: !_isTeacher,
@@ -105,17 +82,9 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
                         height: 45,
                         child: ElevatedButton(
                           onPressed: () {
-                            String discuss = discussCont.text.trim();
-                            if (discuss.isNotEmpty) {
-                              setState(() {
-                                _submitDiscuss(discuss, widget.detailBo.talkId);
-                                discussCont.clear();
-                              });
-                            } else {
-                              ToastUtil.showToastBottom(context, "评论不能为空");
-                            }
+                            _submitDiscuss("", widget.detailBo.talkId);
                           },
-                          child: Text("发布"),
+                          child: Text("签到"),
                         ))),
               ],
             )));
@@ -130,9 +99,7 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.only(top: 5, bottom: 0),
             itemBuilder: (context, index) {
-              return Text(_discussList[index].student.toString() +
-                  ":  " +
-                  _discussList[index].content);
+              return Text(_discussList[index].student.toString());
             },
             itemCount: _discussList.length),
       );
@@ -141,7 +108,7 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
     }
   }
 
-  //获取评论列表
+  //获取签到列表
   _getDiscussList(title, talkId) async {
     var api = "${Config.domain}/message/list";
     print("_getDiscussList--" + talkId);
@@ -151,16 +118,14 @@ class _NewsDiscussState extends State<NewsDiscussPage> {
       setState(() {
         _discussList.clear();
         _discussList = newsList.data;
-        if (_discussList.length > 0) {
-          _discussList.removeAt(0);
-        }
+        _discussList.removeAt(0);
       });
     } else {
       //ToastUtil.showToastBottom(context, "获取异常, 暂无数据");
     }
   }
 
-  //学生-提交评论
+  //学生-签到
   _submitDiscuss(content, talkId) async {
     print("_getDiscussList--" + _userName + "--" + content + "--" + talkId);
     var api = "${Config.domain}/message/add";
